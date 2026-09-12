@@ -740,8 +740,7 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
     return JSON.parse(json);
   }
 
-  var LOCALE_LANG_NAMES = { pt: 'Português', en: 'English', es: 'Español', fr: 'Français', de: 'Deutsch', it: 'Italiano', ja: '日本語', ko: '한국어', zh: '中文' };
-  var GOOGLE_AUTOFILL_IDS = ['f-name', 'f-lang', 'f-country'];
+  var GOOGLE_AUTOFILL_IDS = ['f-name'];
 
   function fillAndLock(fieldId, value){
     var el = document.getElementById(fieldId);
@@ -763,22 +762,6 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
     document.getElementById('google-signed-in').hidden = false;
 
     fillAndLock('f-name', payload.name);
-
-    if(payload.locale){
-      var parts = payload.locale.split(/[-_]/);
-      var langCode = parts[0];
-      var regionCode = parts[1];
-
-      fillAndLock('f-lang', LOCALE_LANG_NAMES[langCode] || payload.locale);
-
-      if(regionCode){
-        var countryName = null;
-        try{
-          countryName = new Intl.DisplayNames([langCode || 'en'], {type:'region'}).of(regionCode.toUpperCase());
-        }catch(e){}
-        fillAndLock('f-country', countryName);
-      }
-    }
   }
 
   function initGoogleSignIn(){
