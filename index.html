@@ -341,6 +341,10 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
   cursor:pointer; padding:2px;
 }
 .field input::placeholder{color:var(--text-soft); opacity:.7; font-family:'Manrope',sans-serif;}
+.field input[readonly]{
+  background:rgba(123,224,138,0.07); border-color:rgba(123,224,138,0.3);
+  color:var(--text-soft); cursor:default;
+}
 .field input:focus, .field select:focus{outline:none; border-color:var(--cyan); box-shadow:0 0 0 3px var(--cyan-dim);}
 .row-2{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
 .submit-btn{
@@ -504,19 +508,6 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
             action="https://docs.google.com/forms/d/e/1FAIpQLSft5EhdXIyrzVyPZEPf47ThdUMaXpWvh4GPfqWQzRxSLZj9cQ/formResponse"
             method="POST" target="hidden_iframe" novalidate>
 
-        <div class="field"><label data-i18n="labelName" for="f-name"></label>
-          <input id="f-name" name="entry.830039424" type="text" required autocomplete="name"></div>
-
-        <div class="row-2">
-          <div class="field"><label data-i18n="labelAge" for="f-age"></label>
-            <input id="f-age" name="entry.108445625" type="number" min="8" max="99" required></div>
-          <div class="field"><label data-i18n="labelCountry" for="f-country"></label>
-            <input id="f-country" name="entry.2102280177" type="text" required autocomplete="country-name"></div>
-        </div>
-
-        <div class="field"><label data-i18n="labelLanguage" for="f-lang"></label>
-          <input id="f-lang" name="entry.1188727805" type="text" required data-i18n-placeholder="placeholderLanguage"></div>
-
         <div class="field">
           <label data-i18n="labelEmail" for="f-email"></label>
           <div id="google-signin-btn"></div>
@@ -527,6 +518,19 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
           </div>
           <input type="hidden" id="f-email" name="entry.567471931" required>
         </div>
+
+        <div class="field"><label data-i18n="labelName" for="f-name"></label>
+          <input id="f-name" name="entry.830039424" type="text" required autocomplete="name"></div>
+
+        <div class="row-2">
+          <div class="field"><label data-i18n="labelLanguage" for="f-lang"></label>
+            <input id="f-lang" name="entry.1188727805" type="text" required data-i18n-placeholder="placeholderLanguage"></div>
+          <div class="field"><label data-i18n="labelCountry" for="f-country"></label>
+            <input id="f-country" name="entry.2102280177" type="text" required autocomplete="country-name"></div>
+        </div>
+
+        <div class="field"><label data-i18n="labelAge" for="f-age"></label>
+          <input id="f-age" name="entry.108445625" type="number" min="8" max="99" required></div>
 
         <div class="field"><label data-i18n="labelBrand" for="f-brand"></label>
           <select id="f-brand" name="entry.924664508" required></select></div>
@@ -736,6 +740,15 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
   }
 
   var LOCALE_LANG_NAMES = { pt: 'Português', en: 'English', es: 'Español', fr: 'Français', de: 'Deutsch', it: 'Italiano', ja: '日本語', ko: '한국어', zh: '中文' };
+  var GOOGLE_AUTOFILL_IDS = ['f-name', 'f-lang', 'f-country'];
+
+  function fillAndLock(fieldId, value){
+    var el = document.getElementById(fieldId);
+    if(el && !el.value && value){
+      el.value = value;
+      el.readOnly = true;
+    }
+  }
 
   function handleGoogleCredential(response){
     var payload;
@@ -748,27 +761,21 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
     document.getElementById('google-signin-btn').hidden = true;
     document.getElementById('google-signed-in').hidden = false;
 
-    var nameField = document.getElementById('f-name');
-    if(nameField && !nameField.value && payload.name){
-      nameField.value = payload.name;
-    }
+    fillAndLock('f-name', payload.name);
 
     if(payload.locale){
       var parts = payload.locale.split(/[-_]/);
       var langCode = parts[0];
       var regionCode = parts[1];
 
-      var langField = document.getElementById('f-lang');
-      if(langField && !langField.value){
-        langField.value = LOCALE_LANG_NAMES[langCode] || payload.locale;
-      }
+      fillAndLock('f-lang', LOCALE_LANG_NAMES[langCode] || payload.locale);
 
-      var countryField = document.getElementById('f-country');
-      if(countryField && !countryField.value && regionCode){
+      if(regionCode){
+        var countryName = null;
         try{
-          var regionNames = new Intl.DisplayNames([langCode || 'en'], {type:'region'});
-          countryField.value = regionNames.of(regionCode.toUpperCase());
+          countryName = new Intl.DisplayNames([langCode || 'en'], {type:'region'}).of(regionCode.toUpperCase());
         }catch(e){}
+        fillAndLock('f-country', countryName);
       }
     }
   }
@@ -796,6 +803,13 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
     document.getElementById('f-email').value = '';
     document.getElementById('google-signed-in').hidden = true;
     document.getElementById('google-signin-btn').hidden = false;
+    GOOGLE_AUTOFILL_IDS.forEach(function(id){
+      var el = document.getElementById(id);
+      if(el && el.readOnly){
+        el.value = '';
+        el.readOnly = false;
+      }
+    });
     if(window.google && window.google.accounts && window.google.accounts.id){
       google.accounts.id.disableAutoSelect();
     }
