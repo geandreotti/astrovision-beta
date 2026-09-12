@@ -295,7 +295,13 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
 .corner-tr{top:-1px; right:-1px; border-top:2px solid; border-right:2px solid; border-top-right-radius:8px;}
 .corner-bl{bottom:-1px; left:-1px; border-bottom:2px solid; border-left:2px solid; border-bottom-left-radius:8px;}
 .corner-br{bottom:-1px; right:-1px; border-bottom:2px solid; border-right:2px solid; border-bottom-right-radius:8px;}
-.card .eyebrow{justify-content:center; margin-bottom:16px;}
+.card .eyebrow{justify-content:center; margin-bottom:10px;}
+.android-note{
+  text-align:center; font-size:11.5px; color:var(--warm);
+  background:rgba(255,154,77,0.1); border:1px solid rgba(255,154,77,0.25);
+  border-radius:8px; padding:7px 12px;
+  margin:0 0 18px;
+}
 .field{margin-bottom:14px;}
 .field label{
   display:block; font-size:11.5px; font-weight:600;
@@ -361,25 +367,41 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
 .success h2{font-family:'Rajdhani', sans-serif; font-weight:700; font-size:22px; margin:0 0 8px;}
 .success p{font-size:13.5px; color:var(--text-soft); line-height:1.6; margin:0 0 4px;}
 .countdown-box{
-  margin-top:20px; padding:16px;
-  background:var(--field-bg);
+  margin-top:20px; padding:20px 16px;
+  background:radial-gradient(120% 140% at 50% -10%, rgba(82,227,232,0.10), transparent 60%), var(--field-bg);
   border:1px solid var(--panel-border);
-  border-radius:12px;
+  border-radius:14px;
 }
 .countdown-label{
-  font-size:11.5px; font-weight:600; letter-spacing:.04em; text-transform:uppercase;
-  color:var(--cyan); margin:0 0 10px;
+  font-size:10.5px; font-weight:600; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--text-soft); margin:0;
+}
+.countdown-date{
+  font-family:'Rajdhani', sans-serif; font-weight:700;
+  font-size:17px; letter-spacing:.02em; text-transform:uppercase;
+  color:var(--cyan);
+  margin:2px 0 16px;
 }
 .countdown-timer{
-  font-family:'IBM Plex Mono', monospace;
-  font-size:26px; font-weight:600; letter-spacing:.04em;
-  color:var(--text);
-  text-shadow:0 0 12px rgba(82,227,232,0.5);
+  display:flex; justify-content:center; align-items:flex-start; gap:8px;
 }
-.countdown-units{
+.cd-unit{ display:flex; flex-direction:column; align-items:center; min-width:46px; }
+.cd-num{
   font-family:'IBM Plex Mono', monospace;
-  font-size:10px; letter-spacing:.14em; color:var(--text-soft);
-  margin:6px 0 0;
+  font-size:28px; font-weight:600; line-height:1;
+  color:var(--text);
+  text-shadow:0 0 14px rgba(82,227,232,0.65);
+  font-variant-numeric:tabular-nums;
+}
+.cd-unit-label{
+  font-family:'IBM Plex Mono', monospace;
+  font-size:9px; letter-spacing:.1em; color:var(--text-soft);
+  margin-top:6px;
+}
+.cd-sep{
+  font-family:'IBM Plex Mono', monospace;
+  font-size:24px; font-weight:600; color:var(--cyan);
+  opacity:.55; line-height:1; padding-top:2px;
 }
 [hidden]{display:none !important;}
 </style>
@@ -460,6 +482,7 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
     <div class="card" id="signup">
       <div class="corner-tl"></div><div class="corner-tr"></div><div class="corner-bl"></div><div class="corner-br"></div>
       <div class="eyebrow" style="justify-content:center;"><span class="dot"></span><span data-i18n="formEyebrow"></span></div>
+      <p class="android-note" data-i18n="androidOnlyNote"></p>
 
       <form id="signup-form"
             action="https://docs.google.com/forms/d/e/1FAIpQLSft5EhdXIyrzVyPZEPf47ThdUMaXpWvh4GPfqWQzRxSLZj9cQ/formResponse"
@@ -504,8 +527,16 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
         <p data-i18n="successP2"></p>
         <div class="countdown-box">
           <p class="countdown-label" data-i18n="countdownLabel"></p>
-          <div class="countdown-timer" id="countdown-timer">--:--:--:--</div>
-          <p class="countdown-units" data-i18n="countdownUnits"></p>
+          <p class="countdown-date" data-i18n="countdownDate"></p>
+          <div class="countdown-timer">
+            <div class="cd-unit"><span class="cd-num" id="cd-days">00</span><span class="cd-unit-label" data-i18n="cdDays"></span></div>
+            <span class="cd-sep">:</span>
+            <div class="cd-unit"><span class="cd-num" id="cd-hours">00</span><span class="cd-unit-label" data-i18n="cdHours"></span></div>
+            <span class="cd-sep">:</span>
+            <div class="cd-unit"><span class="cd-num" id="cd-mins">00</span><span class="cd-unit-label" data-i18n="cdMins"></span></div>
+            <span class="cd-sep">:</span>
+            <div class="cd-unit"><span class="cd-num" id="cd-secs">00</span><span class="cd-unit-label" data-i18n="cdSecs"></span></div>
+          </div>
         </div>
       </div>
 
@@ -566,8 +597,10 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
       successTitle: 'Inscrição recebida',
       successP1: 'Você entrou na lista do teste fechado do Astrovision AR.',
       successP2: 'Fique de olho no e-mail que você cadastrou — o convite do Google Play chega por lá.',
-      countdownLabel: 'Início previsto do teste fechado: 1 de novembro',
-      countdownUnits: 'dias : horas : minutos : segundos',
+      countdownLabel: 'Início previsto do teste fechado',
+      countdownDate: '1 de novembro',
+      cdDays: 'DIAS', cdHours: 'HORAS', cdMins: 'MIN', cdSecs: 'SEG',
+      androidOnlyNote: 'Por enquanto, o teste fechado é só pra Android.',
       errorRequired: 'Preenche os campos obrigatórios pra continuar.',
       notSure: 'Não sei',
       otherBrand: 'Outra',
@@ -608,8 +641,10 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
       successTitle: 'Signup received',
       successP1: 'You’re on the list for the Astrovision AR closed test.',
       successP2: 'Keep an eye on the e-mail you signed up with — the Google Play invite lands there.',
-      countdownLabel: 'Closed test expected to start: November 1st',
-      countdownUnits: 'days : hours : minutes : seconds',
+      countdownLabel: 'Closed test expected to start',
+      countdownDate: 'November 1st',
+      cdDays: 'DAYS', cdHours: 'HOURS', cdMins: 'MIN', cdSecs: 'SEC',
+      androidOnlyNote: 'For now, the closed test is Android-only.',
       errorRequired: 'Fill in the required fields to continue.',
       notSure: 'Not sure',
       otherBrand: 'Other',
@@ -685,20 +720,22 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
   var BETA_START = new Date('2026-11-01T00:00:00-03:00').getTime();
   var countdownInterval = null;
   function startCountdown(){
-    var el = document.getElementById('countdown-timer');
+    var elD = document.getElementById('cd-days');
+    var elH = document.getElementById('cd-hours');
+    var elM = document.getElementById('cd-mins');
+    var elS = document.getElementById('cd-secs');
+    function pad(n){ return String(n).padStart(2, '0'); }
     function tick(){
       var diff = BETA_START - Date.now();
       if(diff <= 0){
-        el.textContent = '00:00:00:00';
+        elD.textContent = elH.textContent = elM.textContent = elS.textContent = '00';
         clearInterval(countdownInterval);
         return;
       }
-      var d = Math.floor(diff / 86400000);
-      var h = Math.floor(diff % 86400000 / 3600000);
-      var m = Math.floor(diff % 3600000 / 60000);
-      var s = Math.floor(diff % 60000 / 1000);
-      function pad(n){ return String(n).padStart(2, '0'); }
-      el.textContent = pad(d) + ':' + pad(h) + ':' + pad(m) + ':' + pad(s);
+      elD.textContent = pad(Math.floor(diff / 86400000));
+      elH.textContent = pad(Math.floor(diff % 86400000 / 3600000));
+      elM.textContent = pad(Math.floor(diff % 3600000 / 60000));
+      elS.textContent = pad(Math.floor(diff % 60000 / 1000));
     }
     tick();
     countdownInterval = setInterval(tick, 1000);
