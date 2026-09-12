@@ -360,6 +360,27 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
 .success .ring svg{width:24px;height:24px;stroke:var(--success);}
 .success h2{font-family:'Rajdhani', sans-serif; font-weight:700; font-size:22px; margin:0 0 8px;}
 .success p{font-size:13.5px; color:var(--text-soft); line-height:1.6; margin:0 0 4px;}
+.countdown-box{
+  margin-top:20px; padding:16px;
+  background:var(--field-bg);
+  border:1px solid var(--panel-border);
+  border-radius:12px;
+}
+.countdown-label{
+  font-size:11.5px; font-weight:600; letter-spacing:.04em; text-transform:uppercase;
+  color:var(--cyan); margin:0 0 10px;
+}
+.countdown-timer{
+  font-family:'IBM Plex Mono', monospace;
+  font-size:26px; font-weight:600; letter-spacing:.04em;
+  color:var(--text);
+  text-shadow:0 0 12px rgba(82,227,232,0.5);
+}
+.countdown-units{
+  font-family:'IBM Plex Mono', monospace;
+  font-size:10px; letter-spacing:.14em; color:var(--text-soft);
+  margin:6px 0 0;
+}
 [hidden]{display:none !important;}
 </style>
 </head>
@@ -481,6 +502,11 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
         <h2 data-i18n="successTitle"></h2>
         <p data-i18n="successP1"></p>
         <p data-i18n="successP2"></p>
+        <div class="countdown-box">
+          <p class="countdown-label" data-i18n="countdownLabel"></p>
+          <div class="countdown-timer" id="countdown-timer">--:--:--:--</div>
+          <p class="countdown-units" data-i18n="countdownUnits"></p>
+        </div>
       </div>
 
       <div class="foot-row">
@@ -540,6 +566,8 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
       successTitle: 'Inscrição recebida',
       successP1: 'Você entrou na lista do teste fechado do Astrovision AR.',
       successP2: 'Fique de olho no e-mail que você cadastrou — o convite do Google Play chega por lá.',
+      countdownLabel: 'Início previsto do teste fechado: 1 de novembro',
+      countdownUnits: 'dias : horas : minutos : segundos',
       errorRequired: 'Preenche os campos obrigatórios pra continuar.',
       notSure: 'Não sei',
       otherBrand: 'Outra',
@@ -580,6 +608,8 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
       successTitle: 'Signup received',
       successP1: 'You’re on the list for the Astrovision AR closed test.',
       successP2: 'Keep an eye on the e-mail you signed up with — the Google Play invite lands there.',
+      countdownLabel: 'Closed test expected to start: November 1st',
+      countdownUnits: 'days : hours : minutes : seconds',
       errorRequired: 'Fill in the required fields to continue.',
       notSure: 'Not sure',
       otherBrand: 'Other',
@@ -652,10 +682,33 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
     // native submit proceeds to the hidden iframe from here
   });
 
+  var BETA_START = new Date('2026-11-01T00:00:00-03:00').getTime();
+  var countdownInterval = null;
+  function startCountdown(){
+    var el = document.getElementById('countdown-timer');
+    function tick(){
+      var diff = BETA_START - Date.now();
+      if(diff <= 0){
+        el.textContent = '00:00:00:00';
+        clearInterval(countdownInterval);
+        return;
+      }
+      var d = Math.floor(diff / 86400000);
+      var h = Math.floor(diff % 86400000 / 3600000);
+      var m = Math.floor(diff % 3600000 / 60000);
+      var s = Math.floor(diff % 60000 / 1000);
+      function pad(n){ return String(n).padStart(2, '0'); }
+      el.textContent = pad(d) + ':' + pad(h) + ':' + pad(m) + ':' + pad(s);
+    }
+    tick();
+    countdownInterval = setInterval(tick, 1000);
+  }
+
   document.getElementById('hidden_iframe').addEventListener('load', function(){
     if(!formSubmitted) return;
     form.hidden = true;
     document.getElementById('success-panel').hidden = false;
+    startCountdown();
   });
 
   var lightbox = document.getElementById('lightbox');
