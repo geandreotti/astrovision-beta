@@ -336,6 +336,17 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
 }
 .google-verified .check-icon{ color:var(--success); font-weight:700; flex-shrink:0; }
 .google-verified span#google-email-display{ flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.already-registered{
+  display:flex; align-items:center; gap:8px; flex-wrap:wrap;
+  background:rgba(255,154,77,0.1); border:1px solid rgba(255,154,77,0.3);
+  border-radius:9px; padding:10px 12px; margin-top:8px;
+  font-family:'Manrope', sans-serif; font-size:12.5px; color:var(--warm); line-height:1.5;
+}
+.already-registered button{
+  flex-shrink:0; background:none; border:1px solid rgba(255,154,77,0.5); color:var(--warm);
+  font-family:'Manrope', sans-serif; font-weight:600; font-size:11.5px;
+  border-radius:6px; padding:5px 10px; cursor:pointer;
+}
 .google-verified button{
   flex-shrink:0; background:none; border:none; color:var(--text-soft);
   font-family:'Manrope', sans-serif; font-size:11.5px; text-decoration:underline;
@@ -524,6 +535,10 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
             <span id="google-email-display"></span>
             <button type="button" id="google-switch-account" data-i18n="googleSwitch"></button>
           </div>
+          <div id="already-registered-warning" class="already-registered" hidden>
+            <span id="already-registered-text"></span>
+            <button type="button" id="already-registered-switch" data-i18n="alreadyRegisteredSwitch"></button>
+          </div>
           <input type="hidden" id="f-email" name="entry.567471931" required>
         </div>
 
@@ -622,6 +637,8 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
       labelEmail: 'Conta do Google',
       googleSwitch: 'trocar de conta',
       errorGoogleRequired: 'Entra com sua conta do Google pra continuar.',
+      alreadyRegisteredNote: 'Você já se cadastrou com o e-mail {{email}}.',
+      alreadyRegisteredSwitch: 'Cadastrar outra conta',
       labelBrand: 'Marca do celular',
       labelModel: 'Modelo do celular',
       placeholderModel: 'ex: Galaxy S23, Redmi Note 13',
@@ -668,6 +685,8 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
       labelEmail: 'Google account',
       googleSwitch: 'switch account',
       errorGoogleRequired: 'Sign in with your Google account to continue.',
+      alreadyRegisteredNote: 'You already signed up with {{email}}.',
+      alreadyRegisteredSwitch: 'Sign up with another account',
       labelBrand: 'Phone brand',
       labelModel: 'Phone model',
       placeholderModel: 'e.g. Galaxy S23, Pixel 8',
@@ -749,12 +768,58 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
   }
 
   var GOOGLE_AUTOFILL_IDS = ['f-name'];
+  var SUBMITTED_EMAILS_KEY = 'astrovision_beta_submitted_emails';
 
   function fillAndLock(fieldId, value){
     var el = document.getElementById(fieldId);
     if(el && !el.value && value){
       el.value = value;
       el.readOnly = true;
+    }
+  }
+
+  function getSubmittedEmails(){
+    try{ return JSON.parse(localStorage.getItem(SUBMITTED_EMAILS_KEY)) || []; }
+    catch(e){ return []; }
+  }
+
+  function rememberSubmittedEmail(email){
+    try{
+      var list = getSubmittedEmails();
+      if(list.indexOf(email) === -1){
+        list.push(email);
+        localStorage.setItem(SUBMITTED_EMAILS_KEY, JSON.stringify(list));
+      }
+    }catch(e){}
+  }
+
+  function checkAlreadyRegistered(email){
+    var warning = document.getElementById('already-registered-warning');
+    var isDuplicate = getSubmittedEmails().indexOf(email) !== -1;
+    warning.hidden = !isDuplicate;
+    if(isDuplicate){
+      document.getElementById('already-registered-text').textContent =
+        STRINGS[currentLang].alreadyRegisteredNote.replace('{{email}}', email);
+    }
+    if(submitBtn) submitBtn.disabled = isDuplicate;
+    return isDuplicate;
+  }
+
+  function resetGoogleSignIn(){
+    document.getElementById('f-email').value = '';
+    document.getElementById('google-signed-in').hidden = true;
+    document.getElementById('google-signin-btn').hidden = false;
+    document.getElementById('already-registered-warning').hidden = true;
+    if(submitBtn) submitBtn.disabled = false;
+    GOOGLE_AUTOFILL_IDS.forEach(function(id){
+      var el = document.getElementById(id);
+      if(el && el.readOnly){
+        el.value = '';
+        el.readOnly = false;
+      }
+    });
+    if(window.google && window.google.accounts && window.google.accounts.id){
+      google.accounts.id.disableAutoSelect();
     }
   }
 
@@ -770,6 +835,7 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
     document.getElementById('google-signed-in').hidden = false;
 
     fillAndLock('f-name', payload.name);
+    checkAlreadyRegistered(payload.email);
   }
 
   function initGoogleSignIn(){
@@ -791,21 +857,8 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
     window.addEventListener('load', initGoogleSignIn);
   }
 
-  document.getElementById('google-switch-account').addEventListener('click', function(){
-    document.getElementById('f-email').value = '';
-    document.getElementById('google-signed-in').hidden = true;
-    document.getElementById('google-signin-btn').hidden = false;
-    GOOGLE_AUTOFILL_IDS.forEach(function(id){
-      var el = document.getElementById(id);
-      if(el && el.readOnly){
-        el.value = '';
-        el.readOnly = false;
-      }
-    });
-    if(window.google && window.google.accounts && window.google.accounts.id){
-      google.accounts.id.disableAutoSelect();
-    }
-  });
+  document.getElementById('google-switch-account').addEventListener('click', resetGoogleSignIn);
+  document.getElementById('already-registered-switch').addEventListener('click', resetGoogleSignIn);
 
   var form = document.getElementById('signup-form');
   var submitBtn = document.getElementById('submit-btn');
@@ -818,9 +871,14 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
       errorMsg.textContent = STRINGS[currentLang].errorRequired;
       return;
     }
-    if(!document.getElementById('f-email').value){
+    var email = document.getElementById('f-email').value;
+    if(!email){
       e.preventDefault();
       errorMsg.textContent = STRINGS[currentLang].errorGoogleRequired;
+      return;
+    }
+    if(checkAlreadyRegistered(email)){
+      e.preventDefault();
       return;
     }
     errorMsg.textContent = '';
@@ -857,7 +915,9 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
   document.getElementById('hidden_iframe').addEventListener('load', function(){
     if(!formSubmitted) return;
     form.hidden = true;
-    document.getElementById('success-email').textContent = document.getElementById('f-email').value;
+    var submittedEmail = document.getElementById('f-email').value;
+    document.getElementById('success-email').textContent = submittedEmail;
+    rememberSubmittedEmail(submittedEmail);
     document.getElementById('success-panel').hidden = false;
     startCountdown();
   });
