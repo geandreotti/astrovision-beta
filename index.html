@@ -17,6 +17,10 @@
   --cyan:#52e3e8;
   --cyan-dim:rgba(82,227,232,0.15);
   --warm:#ff9a4d;
+  --success:#7be08a;
+  --danger:#ff8a7a;
+  --field-bg:rgba(255,255,255,0.04);
+  --field-border:rgba(147,167,184,0.28);
 }
 @media (prefers-color-scheme: light){
   :root{
@@ -28,6 +32,10 @@
     --cyan:#0f8f96;
     --cyan-dim:rgba(15,143,150,0.12);
     --warm:#c9611c;
+    --success:#227a3a;
+    --danger:#b23b2c;
+    --field-bg:rgba(0,0,0,0.03);
+    --field-border:rgba(30,50,60,0.22);
   }
 }
 *{box-sizing:border-box;}
@@ -71,7 +79,7 @@ img{max-width:100%;}
   padding:40px 16px 56px;
 }
 .card{
-  width:100%; max-width:540px;
+  width:100%; max-width:480px;
   background:var(--panel);
   border:1px solid var(--panel-border);
   border-radius:18px;
@@ -89,12 +97,12 @@ img{max-width:100%;}
 .corner-tr{top:-1px; right:-1px; border-top:2px solid; border-right:2px solid; border-top-right-radius:8px;}
 .corner-bl{bottom:-1px; left:-1px; border-bottom:2px solid; border-left:2px solid; border-bottom-left-radius:8px;}
 .corner-br{bottom:-1px; right:-1px; border-bottom:2px solid; border-right:2px solid; border-bottom-right-radius:8px;}
+.top-row{display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:14px;}
 .eyebrow{
   font-family:'IBM Plex Mono', monospace;
   font-size:11px; letter-spacing:.14em; text-transform:uppercase;
   color:var(--cyan);
   display:flex; align-items:center; gap:8px;
-  margin-bottom:14px;
 }
 .eyebrow .dot{
   width:6px; height:6px; border-radius:50%; background:var(--cyan);
@@ -103,6 +111,17 @@ img{max-width:100%;}
 }
 @keyframes pulse{ 0%,100%{opacity:.4;} 50%{opacity:1;} }
 @media (prefers-reduced-motion: reduce){ .eyebrow .dot{animation:none;} }
+.lang-toggle{
+  flex-shrink:0;
+  font-family:'IBM Plex Mono', monospace;
+  font-size:11px; font-weight:600; letter-spacing:.04em;
+  color:var(--cyan);
+  background:var(--cyan-dim);
+  border:1px solid var(--panel-border);
+  border-radius:99px;
+  padding:5px 11px;
+  cursor:pointer;
+}
 h1{
   font-family:'Rajdhani', system-ui, sans-serif;
   font-weight:700;
@@ -122,30 +141,46 @@ h1 span{color:var(--cyan);}
   margin:0 0 22px;
 }
 .pitch strong{color:var(--text); font-weight:600;}
-.form-embed{
-  position:relative;
-  border-radius:12px;
-  overflow:hidden;
-  background:#fff;
-  border:1px solid var(--panel-border);
-  min-height:520px;
+.field{margin-bottom:14px;}
+.field label{
+  display:block; font-size:11.5px; font-weight:600;
+  letter-spacing:.03em; text-transform:uppercase;
+  color:var(--text-soft); margin-bottom:6px;
 }
-.form-embed iframe{
-  display:block; width:100%; height:900px; border:0;
+.field .opt{font-weight:400; text-transform:none; letter-spacing:0; font-size:11px; opacity:.7;}
+.field input, .field select{
+  width:100%;
+  font-family:'IBM Plex Mono', monospace;
+  font-size:14px;
+  color:var(--text);
+  background:var(--field-bg);
+  border:1px solid var(--field-border);
+  border-radius:9px;
+  padding:11px 12px;
 }
-.form-pending{
-  display:flex; flex-direction:column; align-items:center; justify-content:center;
-  gap:10px; min-height:220px; padding:20px;
-  text-align:center;
+.field select{ appearance:none; -webkit-appearance:none;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%2393a7b8'><path d='M5.5 7.5l4.5 4.5 4.5-4.5' stroke='%2393a7b8' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-repeat:no-repeat; background-position:right 12px center; padding-right:32px;
 }
-.form-pending .spin{
-  width:22px; height:22px; border-radius:50%;
-  border:2px solid #d8e6e7; border-top-color:#0f8f96;
-  animation:spin 1s linear infinite;
+.field select option{ color:#0e1720; }
+.field input::placeholder{color:var(--text-soft); opacity:.7; font-family:'Manrope',sans-serif;}
+.field input:focus, .field select:focus{outline:none; border-color:var(--cyan); box-shadow:0 0 0 3px var(--cyan-dim);}
+.row-2{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+.submit-btn{
+  width:100%; margin-top:6px;
+  font-family:'Rajdhani', sans-serif;
+  font-weight:700; font-size:16px; letter-spacing:.03em;
+  text-transform:uppercase;
+  color:#05171a;
+  background:linear-gradient(90deg, var(--cyan), #8ff0f3);
+  border:none; border-radius:10px;
+  padding:13px 16px;
+  cursor:pointer;
+  box-shadow:0 8px 24px -10px rgba(82,227,232,0.55);
 }
-@keyframes spin{ to{transform:rotate(360deg);} }
-@media (prefers-reduced-motion: reduce){ .form-pending .spin{animation:none;} }
-.form-pending p{font-size:13px; color:#5c6b73; margin:0; max-width:280px;}
+.submit-btn:disabled{opacity:.55; cursor:default;}
+.submit-btn:active:not(:disabled){transform:translateY(1px);}
+.error-msg{font-size:12.5px; color:var(--danger); margin-top:10px; min-height:1em;}
 .foot-row{
   margin-top:18px; padding-top:16px;
   border-top:1px solid var(--panel-border);
@@ -159,6 +194,18 @@ h1 span{color:var(--cyan);}
   color:var(--text-soft); opacity:.6;
   text-align:center;
 }
+.success{text-align:center; padding:18px 4px 6px;}
+.success .ring{
+  width:56px; height:56px; margin:0 auto 16px;
+  border-radius:50%;
+  border:2px solid var(--success);
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 0 24px -4px var(--success);
+}
+.success .ring svg{width:24px;height:24px;stroke:var(--success);}
+.success h2{font-family:'Rajdhani', sans-serif; font-weight:700; font-size:22px; margin:0 0 8px;}
+.success p{font-size:13.5px; color:var(--text-soft); line-height:1.6; margin:0 0 4px;}
+[hidden]{display:none !important;}
 </style>
 </head>
 <body>
@@ -167,33 +214,204 @@ h1 span{color:var(--cyan);}
 <div class="wrap">
   <div class="card">
     <div class="corner-tl"></div><div class="corner-tr"></div><div class="corner-bl"></div><div class="corner-br"></div>
-    <div class="eyebrow"><span class="dot"></span>ASTROVISION AR &middot; PROGRAMA BETA</div>
-    <h1>Ajude a testar o <span>Astrovision AR</span> antes do lançamento</h1>
+
+    <div class="top-row">
+      <div class="eyebrow"><span class="dot"></span><span data-i18n="eyebrow"></span></div>
+      <button type="button" class="lang-toggle" id="lang-toggle">EN</button>
+    </div>
+
+    <h1><span data-i18n="h1a"></span><span>Astrovision AR</span><span data-i18n="h1b"></span></h1>
     <div class="gradient-rule"></div>
-    <p class="pitch">Estamos recrutando um grupo pequeno pra o teste fechado no Google Play. Preencha a inscrição abaixo — avisamos por <strong>e-mail</strong> assim que o convite estiver pronto.</p>
-    <div class="form-embed" id="form-embed">
-      <div class="form-pending" id="form-pending">
-        <div class="spin"></div>
-        <p>Formulário de inscrição chegando em breve.</p>
+    <p class="pitch" data-i18n="pitch"></p>
+
+    <form id="signup-form"
+          action="https://docs.google.com/forms/d/e/1FAIpQLSft5EhdXIyrzVyPZEPf47ThdUMaXpWvh4GPfqWQzRxSLZj9cQ/formResponse"
+          method="POST" target="hidden_iframe" novalidate>
+
+      <div class="field"><label data-i18n="labelName" for="f-name"></label>
+        <input id="f-name" name="entry.830039424" type="text" required autocomplete="name"></div>
+
+      <div class="row-2">
+        <div class="field"><label data-i18n="labelAge" for="f-age"></label>
+          <input id="f-age" name="entry.108445625" type="number" min="8" max="99" required></div>
+        <div class="field"><label data-i18n="labelCountry" for="f-country"></label>
+          <input id="f-country" name="entry.2102280177" type="text" required autocomplete="country-name"></div>
       </div>
+
+      <div class="field"><label data-i18n="labelLanguage" for="f-lang"></label>
+        <input id="f-lang" name="entry.1188727805" type="text" required data-i18n-placeholder="placeholderLanguage"></div>
+
+      <div class="field"><label data-i18n="labelEmail" for="f-email"></label>
+        <input id="f-email" name="entry.567471931" type="email" required autocomplete="email"></div>
+
+      <div class="field"><label data-i18n="labelBrand" for="f-brand"></label>
+        <select id="f-brand" name="entry.924664508" required></select></div>
+
+      <div class="field"><label data-i18n="labelModel" for="f-model"></label>
+        <input id="f-model" name="entry.1044148243" type="text" required data-i18n-placeholder="placeholderModel"></div>
+
+      <div class="field"><label data-i18n="labelAndroid" for="f-android"></label>
+        <select id="f-android" name="entry.256874408"></select></div>
+
+      <div class="field"><label data-i18n="labelSocial" for="f-social"><span data-i18n="labelSocialText"></span> <span class="opt" data-i18n="optOptional"></span></label>
+        <input id="f-social" name="entry.179313469" type="text" data-i18n-placeholder="placeholderSocial"></div>
+
+      <button type="submit" class="submit-btn" id="submit-btn" data-i18n="submitBtn"></button>
+      <div class="error-msg" id="error-msg"></div>
+    </form>
+
+    <div class="success" id="success-panel" hidden>
+      <div class="ring"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12.5l5 5L20 6" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <h2 data-i18n="successTitle"></h2>
+      <p data-i18n="successP1"></p>
+      <p data-i18n="successP2"></p>
     </div>
+
     <div class="foot-row">
-      <div class="foot-note">Seus dados são usados só pra te convidar no teste fechado do Google Play.</div>
+      <div class="foot-note" data-i18n="footNote"></div>
     </div>
-    <div class="credit">Astrovision AR &middot; um jogo da Chrome Hypercube</div>
+    <div class="credit" data-i18n="credit"></div>
   </div>
 </div>
-<script>
-  // TODO: replace with the real published Google Form's embed URL once it's
-  // created — open the form, click Send > <> (embed HTML), copy the src, or
-  // just take the normal form URL and swap "viewform" for
-  // "viewform?embedded=true".
-  var GOOGLE_FORM_EMBED_URL = "PASTE_GOOGLE_FORM_EMBED_URL_HERE";
 
-  if(GOOGLE_FORM_EMBED_URL.indexOf('http') === 0){
-    var container = document.getElementById('form-embed');
-    container.innerHTML = '<iframe src="' + GOOGLE_FORM_EMBED_URL + '" title="Inscrição beta Astrovision AR">Carregando…</iframe>';
+<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+
+<script>
+(function(){
+  var BRANDS = ["Samsung","Xiaomi, Redmi ou POCO","Motorola","Google Pixel","Asus","Realme","OnePlus","Multilaser","LG","Sony","Nokia","TCL","Lenovo","Infinix"];
+  var ANDROID_VERSIONS = ["Android 15","Android 14","Android 13","Android 12","Android 11","Android 10","Android 9","Android 8","Android 7"];
+
+  var STRINGS = {
+    pt: {
+      eyebrow: 'ASTROVISION AR · PROGRAMA BETA',
+      h1a: 'Ajude a testar o ', h1b: ' antes do lançamento',
+      pitch: 'Estamos recrutando um grupo pequeno pra o teste fechado no Google Play. Preencha a inscrição abaixo — avisamos por e-mail assim que o convite estiver pronto.',
+      labelName: 'Nome completo',
+      labelAge: 'Idade',
+      labelCountry: 'País',
+      labelLanguage: 'Idioma preferido',
+      placeholderLanguage: 'Português, English…',
+      labelEmail: 'E-mail do Google Play',
+      labelBrand: 'Marca do celular',
+      labelModel: 'Modelo do celular',
+      placeholderModel: 'ex: Galaxy S23, Redmi Note 13',
+      labelAndroid: 'Versão do Android',
+      labelSocialText: 'Instagram / Discord',
+      optOptional: '(opcional)',
+      placeholderSocial: '@seu_usuario',
+      submitBtn: 'Quero testar',
+      submitting: 'Enviando…',
+      footNote: 'Seus dados são usados só pra te convidar no teste fechado do Google Play.',
+      credit: 'Astrovision AR · um jogo da Chrome Hypercube',
+      successTitle: 'Inscrição recebida',
+      successP1: 'Você entrou na lista do teste fechado do Astrovision AR.',
+      successP2: 'Fique de olho no e-mail que você cadastrou — o convite do Google Play chega por lá.',
+      errorRequired: 'Preenche os campos obrigatórios pra continuar.',
+      notSure: 'Não sei',
+      otherBrand: 'Outra',
+      toggleLabel: 'EN'
+    },
+    en: {
+      eyebrow: 'ASTROVISION AR · BETA PROGRAM',
+      h1a: 'Help test ', h1b: ' before launch',
+      pitch: 'We’re recruiting a small group for the Google Play closed test. Fill in the form below — we’ll email you once your invite is ready.',
+      labelName: 'Full name',
+      labelAge: 'Age',
+      labelCountry: 'Country',
+      labelLanguage: 'Preferred language',
+      placeholderLanguage: 'English, Português…',
+      labelEmail: 'Google Play e-mail',
+      labelBrand: 'Phone brand',
+      labelModel: 'Phone model',
+      placeholderModel: 'e.g. Galaxy S23, Pixel 8',
+      labelAndroid: 'Android version',
+      labelSocialText: 'Instagram / Discord',
+      optOptional: '(optional)',
+      placeholderSocial: '@your_handle',
+      submitBtn: 'I want to test',
+      submitting: 'Sending…',
+      footNote: 'Your info is only used to invite you to the Google Play closed test.',
+      credit: 'Astrovision AR · a Chrome Hypercube game',
+      successTitle: 'Signup received',
+      successP1: 'You’re on the list for the Astrovision AR closed test.',
+      successP2: 'Keep an eye on the e-mail you signed up with — the Google Play invite lands there.',
+      errorRequired: 'Fill in the required fields to continue.',
+      notSure: 'Not sure',
+      otherBrand: 'Other',
+      toggleLabel: 'PT'
+    }
+  };
+
+  var currentLang = (navigator.language || 'pt').toLowerCase().indexOf('pt') === 0 ? 'pt' : 'en';
+
+  function fillSelect(select, values, trailingKey, lang){
+    select.innerHTML = '';
+    values.forEach(function(v){
+      var o = document.createElement('option');
+      o.value = v; o.textContent = v;
+      select.appendChild(o);
+    });
+    var trailing = document.createElement('option');
+    trailing.value = STRINGS[lang][trailingKey];
+    trailing.textContent = STRINGS[lang][trailingKey];
+    select.appendChild(trailing);
   }
+
+  function applyLang(lang){
+    currentLang = lang;
+    document.documentElement.lang = lang === 'pt' ? 'pt-BR' : 'en';
+    var s = STRINGS[lang];
+    document.querySelectorAll('[data-i18n]').forEach(function(el){
+      var key = el.getAttribute('data-i18n');
+      if(s[key] != null) el.textContent = s[key];
+    });
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el){
+      var key = el.getAttribute('data-i18n-placeholder');
+      if(s[key] != null) el.placeholder = s[key];
+    });
+    document.getElementById('lang-toggle').textContent = s.toggleLabel;
+
+    var brandSel = document.getElementById('f-brand');
+    var prevBrand = brandSel.value;
+    fillSelect(brandSel, BRANDS, 'otherBrand', lang);
+    if(prevBrand) brandSel.value = prevBrand;
+
+    var androidSel = document.getElementById('f-android');
+    var prevAndroid = androidSel.value;
+    fillSelect(androidSel, ANDROID_VERSIONS, 'notSure', lang);
+    if(prevAndroid) androidSel.value = prevAndroid;
+  }
+
+  document.getElementById('lang-toggle').addEventListener('click', function(){
+    applyLang(currentLang === 'pt' ? 'en' : 'pt');
+  });
+
+  applyLang(currentLang);
+
+  var form = document.getElementById('signup-form');
+  var submitBtn = document.getElementById('submit-btn');
+  var errorMsg = document.getElementById('error-msg');
+  var formSubmitted = false;
+
+  form.addEventListener('submit', function(e){
+    if(!form.checkValidity()){
+      e.preventDefault();
+      errorMsg.textContent = STRINGS[currentLang].errorRequired;
+      return;
+    }
+    errorMsg.textContent = '';
+    formSubmitted = true;
+    submitBtn.disabled = true;
+    submitBtn.textContent = STRINGS[currentLang].submitting;
+    // native submit proceeds to the hidden iframe from here
+  });
+
+  document.getElementById('hidden_iframe').addEventListener('load', function(){
+    if(!formSubmitted) return;
+    form.hidden = true;
+    document.getElementById('success-panel').hidden = false;
+  });
+})();
 </script>
 </body>
 </html>
