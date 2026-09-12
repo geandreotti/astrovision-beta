@@ -71,7 +71,7 @@ img{max-width:100%;}
   padding:40px 16px 56px;
 }
 .card{
-  width:100%; max-width:460px;
+  width:100%; max-width:540px;
   background:var(--panel);
   border:1px solid var(--panel-border);
   border-radius:18px;
@@ -122,21 +122,30 @@ h1 span{color:var(--cyan);}
   margin:0 0 22px;
 }
 .pitch strong{color:var(--text); font-weight:600;}
-.cta-btn{
-  display:block; width:100%; text-align:center;
-  margin-top:6px;
-  font-family:'Rajdhani', sans-serif;
-  font-weight:700; font-size:16px; letter-spacing:.03em;
-  text-transform:uppercase;
-  color:#05171a;
-  background:linear-gradient(90deg, var(--cyan), #8ff0f3);
-  border:none; border-radius:10px;
-  padding:14px 16px;
-  cursor:pointer;
-  text-decoration:none;
-  box-shadow:0 8px 24px -10px rgba(82,227,232,0.55);
+.form-embed{
+  position:relative;
+  border-radius:12px;
+  overflow:hidden;
+  background:#fff;
+  border:1px solid var(--panel-border);
+  min-height:520px;
 }
-.cta-btn:active{transform:translateY(1px);}
+.form-embed iframe{
+  display:block; width:100%; height:900px; border:0;
+}
+.form-pending{
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:10px; min-height:220px; padding:20px;
+  text-align:center;
+}
+.form-pending .spin{
+  width:22px; height:22px; border-radius:50%;
+  border:2px solid #d8e6e7; border-top-color:#0f8f96;
+  animation:spin 1s linear infinite;
+}
+@keyframes spin{ to{transform:rotate(360deg);} }
+@media (prefers-reduced-motion: reduce){ .form-pending .spin{animation:none;} }
+.form-pending p{font-size:13px; color:#5c6b73; margin:0; max-width:280px;}
 .foot-row{
   margin-top:18px; padding-top:16px;
   border-top:1px solid var(--panel-border);
@@ -161,8 +170,13 @@ h1 span{color:var(--cyan);}
     <div class="eyebrow"><span class="dot"></span>ASTROVISION AR &middot; PROGRAMA BETA</div>
     <h1>Ajude a testar o <span>Astrovision AR</span> antes do lançamento</h1>
     <div class="gradient-rule"></div>
-    <p class="pitch">Estamos recrutando um grupo pequeno pra o teste fechado no Google Play. Preencha a inscrição — avisamos por <strong>e-mail</strong> assim que o convite estiver pronto.</p>
-    <a class="cta-btn" id="cta-link" href="#" target="_blank" rel="noopener">Quero testar</a>
+    <p class="pitch">Estamos recrutando um grupo pequeno pra o teste fechado no Google Play. Preencha a inscrição abaixo — avisamos por <strong>e-mail</strong> assim que o convite estiver pronto.</p>
+    <div class="form-embed" id="form-embed">
+      <div class="form-pending" id="form-pending">
+        <div class="spin"></div>
+        <p>Formulário de inscrição chegando em breve.</p>
+      </div>
+    </div>
     <div class="foot-row">
       <div class="foot-note">Seus dados são usados só pra te convidar no teste fechado do Google Play.</div>
     </div>
@@ -170,9 +184,16 @@ h1 span{color:var(--cyan);}
   </div>
 </div>
 <script>
-  // TODO: replace with the real published Google Form URL once it's created.
-  var GOOGLE_FORM_URL = "PASTE_GOOGLE_FORM_URL_HERE";
-  document.getElementById('cta-link').href = GOOGLE_FORM_URL;
+  // TODO: replace with the real published Google Form's embed URL once it's
+  // created — open the form, click Send > <> (embed HTML), copy the src, or
+  // just take the normal form URL and swap "viewform" for
+  // "viewform?embedded=true".
+  var GOOGLE_FORM_EMBED_URL = "PASTE_GOOGLE_FORM_EMBED_URL_HERE";
+
+  if(GOOGLE_FORM_EMBED_URL.indexOf('http') === 0){
+    var container = document.getElementById('form-embed');
+    container.innerHTML = '<iframe src="' + GOOGLE_FORM_EMBED_URL + '" title="Inscrição beta Astrovision AR">Carregando…</iframe>';
+  }
 </script>
 </body>
 </html>
