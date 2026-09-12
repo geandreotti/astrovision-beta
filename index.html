@@ -207,6 +207,32 @@ img{max-width:100%;}
   width:100%; height:170px; object-fit:cover; object-position:top;
   border-radius:10px;
   border:1px solid var(--panel-border);
+  cursor:zoom-in;
+  transition:opacity .15s;
+}
+.feature img:hover, .feature img:focus-visible{ opacity:.85; }
+.lightbox{
+  position:fixed; inset:0; z-index:20;
+  background:rgba(4,6,12,0.88);
+  display:flex; align-items:center; justify-content:center;
+  padding:32px 16px;
+  cursor:zoom-out;
+  backdrop-filter:blur(4px);
+}
+.lightbox img{
+  max-width:100%; max-height:100%;
+  border-radius:14px;
+  border:1px solid var(--panel-border);
+  box-shadow:0 30px 80px -20px rgba(0,0,0,0.8);
+  cursor:default;
+}
+.lightbox-close{
+  position:fixed; top:18px; right:18px; z-index:21;
+  width:38px; height:38px; border-radius:50%;
+  background:var(--panel); border:1px solid var(--panel-border);
+  color:var(--text); font-size:20px; line-height:1;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer;
 }
 .feature h3{
   font-family:'Rajdhani', sans-serif; font-weight:700; font-size:19px;
@@ -405,6 +431,11 @@ img{max-width:100%;}
 
 <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
 
+<div class="lightbox" id="lightbox" hidden>
+  <button type="button" class="lightbox-close" id="lightbox-close" aria-label="Close">&times;</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
 <script>
 (function(){
   var BRANDS = ["Samsung","Xiaomi, Redmi ou POCO","Motorola","Google Pixel","Asus","Realme","OnePlus","Multilaser","LG","Sony","Nokia","TCL","Lenovo","Infinix"];
@@ -557,6 +588,30 @@ img{max-width:100%;}
     if(!formSubmitted) return;
     form.hidden = true;
     document.getElementById('success-panel').hidden = false;
+  });
+
+  var lightbox = document.getElementById('lightbox');
+  var lightboxImg = document.getElementById('lightbox-img');
+
+  function openLightbox(src, alt){
+    lightboxImg.src = src;
+    lightboxImg.alt = alt || '';
+    lightbox.hidden = false;
+  }
+  function closeLightbox(){
+    lightbox.hidden = true;
+    lightboxImg.src = '';
+  }
+
+  document.querySelectorAll('.feature img').forEach(function(img){
+    img.addEventListener('click', function(){ openLightbox(img.src, img.alt); });
+  });
+  lightbox.addEventListener('click', function(e){
+    if(e.target === lightbox) closeLightbox();
+  });
+  document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && !lightbox.hidden) closeLightbox();
   });
 })();
 </script>
