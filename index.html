@@ -387,6 +387,13 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
 .success .ring svg{width:24px;height:24px;stroke:var(--success);}
 .success h2{font-family:'Rajdhani', sans-serif; font-weight:700; font-size:22px; margin:0 0 8px;}
 .success p{font-size:13.5px; color:var(--text-soft); line-height:1.6; margin:0 0 4px;}
+.success-email{
+  display:inline-block; margin:10px auto 0 !important;
+  font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--success) !important;
+  background:rgba(123,224,138,0.1); border:1px solid rgba(123,224,138,0.3);
+  border-radius:8px; padding:6px 14px;
+  max-width:100%; overflow-wrap:break-word;
+}
 .countdown-box{
   margin-top:20px; padding:20px 16px;
   background:radial-gradient(120% 140% at 50% -10%, rgba(82,227,232,0.10), transparent 60%), var(--field-bg);
@@ -554,6 +561,7 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
         <h2 data-i18n="successTitle"></h2>
         <p data-i18n="successP1"></p>
         <p data-i18n="successP2"></p>
+        <p class="success-email" id="success-email"></p>
         <div class="countdown-box">
           <p class="countdown-label" data-i18n="countdownLabel"></p>
           <p class="countdown-date" data-i18n="countdownDate"></p>
@@ -849,6 +857,7 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
   document.getElementById('hidden_iframe').addEventListener('load', function(){
     if(!formSubmitted) return;
     form.hidden = true;
+    document.getElementById('success-email').textContent = document.getElementById('f-email').value;
     document.getElementById('success-panel').hidden = false;
     startCountdown();
   });
