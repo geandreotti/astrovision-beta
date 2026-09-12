@@ -18,6 +18,7 @@
 <meta name="twitter:description" content="Ajude a testar o Astrovision AR antes do lançamento.">
 <meta name="twitter:image" content="https://geandreotti.github.io/astrovision-beta/screenshots/banner-pt.jpg">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<script src="https://accounts.google.com/gsi/client"></script>
 <style>
 :root{
   color-scheme: dark;
@@ -324,6 +325,20 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
   background-repeat:no-repeat; background-position:right 12px center; padding-right:32px;
 }
 .field select option{ color:#0e1720; }
+#google-signin-btn{ display:flex; justify-content:center; }
+.google-verified{
+  display:flex; align-items:center; gap:8px;
+  background:rgba(123,224,138,0.1); border:1px solid rgba(123,224,138,0.35);
+  border-radius:9px; padding:10px 12px;
+  font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--text);
+}
+.google-verified .check-icon{ color:var(--success); font-weight:700; flex-shrink:0; }
+.google-verified span#google-email-display{ flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.google-verified button{
+  flex-shrink:0; background:none; border:none; color:var(--text-soft);
+  font-family:'Manrope', sans-serif; font-size:11.5px; text-decoration:underline;
+  cursor:pointer; padding:2px;
+}
 .field input::placeholder{color:var(--text-soft); opacity:.7; font-family:'Manrope',sans-serif;}
 .field input:focus, .field select:focus{outline:none; border-color:var(--cyan); box-shadow:0 0 0 3px var(--cyan-dim);}
 .row-2{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
@@ -501,8 +516,16 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
         <div class="field"><label data-i18n="labelLanguage" for="f-lang"></label>
           <input id="f-lang" name="entry.1188727805" type="text" required data-i18n-placeholder="placeholderLanguage"></div>
 
-        <div class="field"><label data-i18n="labelEmail" for="f-email"></label>
-          <input id="f-email" name="entry.567471931" type="email" required autocomplete="email"></div>
+        <div class="field">
+          <label data-i18n="labelEmail" for="f-email"></label>
+          <div id="google-signin-btn"></div>
+          <div id="google-signed-in" class="google-verified" hidden>
+            <span class="check-icon">&#10003;</span>
+            <span id="google-email-display"></span>
+            <button type="button" id="google-switch-account" data-i18n="googleSwitch"></button>
+          </div>
+          <input type="hidden" id="f-email" name="entry.567471931" required>
+        </div>
 
         <div class="field"><label data-i18n="labelBrand" for="f-brand"></label>
           <select id="f-brand" name="entry.924664508" required></select></div>
@@ -582,7 +605,9 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
       labelCountry: 'País',
       labelLanguage: 'Idioma preferido',
       placeholderLanguage: 'Português, English…',
-      labelEmail: 'E-mail do Google Play',
+      labelEmail: 'Conta do Google',
+      googleSwitch: 'trocar de conta',
+      errorGoogleRequired: 'Entra com sua conta do Google pra continuar.',
       labelBrand: 'Marca do celular',
       labelModel: 'Modelo do celular',
       placeholderModel: 'ex: Galaxy S23, Redmi Note 13',
@@ -626,7 +651,9 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
       labelCountry: 'Country',
       labelLanguage: 'Preferred language',
       placeholderLanguage: 'English, Português…',
-      labelEmail: 'Google Play e-mail',
+      labelEmail: 'Google account',
+      googleSwitch: 'switch account',
+      errorGoogleRequired: 'Sign in with your Google account to continue.',
       labelBrand: 'Phone brand',
       labelModel: 'Phone model',
       placeholderModel: 'e.g. Galaxy S23, Pixel 8',
@@ -699,6 +726,54 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
 
   applyLang(currentLang);
 
+  function decodeJwtPayload(token){
+    var base64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+    var json = decodeURIComponent(atob(base64).split('').map(function(c){
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+    return JSON.parse(json);
+  }
+
+  function handleGoogleCredential(response){
+    var payload;
+    try{ payload = decodeJwtPayload(response.credential); }
+    catch(e){ return; }
+    if(!payload || !payload.email) return;
+
+    document.getElementById('f-email').value = payload.email;
+    document.getElementById('google-email-display').textContent = payload.email;
+    document.getElementById('google-signin-btn').hidden = true;
+    document.getElementById('google-signed-in').hidden = false;
+  }
+
+  function initGoogleSignIn(){
+    if(!window.google || !window.google.accounts || !window.google.accounts.id) return;
+    google.accounts.id.initialize({
+      client_id: '394997597989-ld5v35n0oq1nqi2a46n4d34msnm533fg.apps.googleusercontent.com',
+      callback: handleGoogleCredential
+    });
+    var btnContainer = document.getElementById('google-signin-btn');
+    var btnWidth = Math.min(300, btnContainer.clientWidth || 300);
+    google.accounts.id.renderButton(btnContainer, {
+      theme: 'filled_black', size: 'large', shape: 'pill', text: 'continue_with', width: btnWidth
+    });
+  }
+
+  if(window.google && window.google.accounts){
+    initGoogleSignIn();
+  } else {
+    window.addEventListener('load', initGoogleSignIn);
+  }
+
+  document.getElementById('google-switch-account').addEventListener('click', function(){
+    document.getElementById('f-email').value = '';
+    document.getElementById('google-signed-in').hidden = true;
+    document.getElementById('google-signin-btn').hidden = false;
+    if(window.google && window.google.accounts && window.google.accounts.id){
+      google.accounts.id.disableAutoSelect();
+    }
+  });
+
   var form = document.getElementById('signup-form');
   var submitBtn = document.getElementById('submit-btn');
   var errorMsg = document.getElementById('error-msg');
@@ -708,6 +783,11 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
     if(!form.checkValidity()){
       e.preventDefault();
       errorMsg.textContent = STRINGS[currentLang].errorRequired;
+      return;
+    }
+    if(!document.getElementById('f-email').value){
+      e.preventDefault();
+      errorMsg.textContent = STRINGS[currentLang].errorGoogleRequired;
       return;
     }
     errorMsg.textContent = '';
