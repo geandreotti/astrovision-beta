@@ -153,7 +153,25 @@ img{max-width:100%;}
   cursor:pointer;
 }
 
-.hero{ text-align:center; margin-bottom:56px; }
+html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
+.snap-section{
+  scroll-snap-align:start;
+  min-height:100svh;
+  display:flex; flex-direction:column; justify-content:center;
+  align-items:center;
+  position:relative;
+  padding:64px 0;
+}
+.hero-page .top-row{ position:absolute; top:0; left:0; right:0; }
+.scroll-hint{
+  position:absolute; bottom:22px; left:50%; transform:translateX(-50%);
+  color:var(--cyan); font-size:22px; text-decoration:none;
+  opacity:.7;
+  animation:bob 2.2s ease-in-out infinite;
+}
+@keyframes bob{ 0%,100%{transform:translate(-50%,0);} 50%{transform:translate(-50%,8px);} }
+@media (prefers-reduced-motion: reduce){ .scroll-hint{animation:none;} html{scroll-snap-type:none; scroll-behavior:auto;} }
+.hero{ text-align:center; width:100%; }
 .hero h1{
   font-family:'Rajdhani', system-ui, sans-serif;
   font-weight:700;
@@ -192,8 +210,9 @@ img{max-width:100%;}
   color:var(--text-soft);
   text-align:center;
   margin:0 0 30px;
+  width:100%;
 }
-.features{ display:flex; flex-direction:column; gap:20px; margin-bottom:56px; }
+.features{ display:flex; flex-direction:column; gap:20px; width:100%; }
 .feature{
   display:grid; grid-template-columns:132px 1fr; gap:18px; align-items:center;
   background:var(--panel);
@@ -344,35 +363,40 @@ img{max-width:100%;}
 
 <div class="page">
 
-  <div class="top-row">
-    <div class="eyebrow"><span class="dot"></span><span data-i18n="eyebrow"></span></div>
-    <button type="button" class="lang-toggle" id="lang-toggle">EN</button>
-  </div>
-
-  <section class="hero">
-    <h1><span data-i18n="h1a"></span><span class="accent">Astrovision AR</span><span data-i18n="h1b"></span></h1>
-    <div class="gradient-rule"></div>
-    <p class="pitch" data-i18n="pitch"></p>
-    <a class="hero-cta" href="#signup" data-i18n="heroCta"></a>
+  <section class="snap-section hero-page">
+    <div class="top-row">
+      <div class="eyebrow"><span class="dot"></span><span data-i18n="eyebrow"></span></div>
+      <button type="button" class="lang-toggle" id="lang-toggle">EN</button>
+    </div>
+    <div class="hero">
+      <h1><span data-i18n="h1a"></span><span class="accent">Astrovision AR</span><span data-i18n="h1b"></span></h1>
+      <div class="gradient-rule"></div>
+      <p class="pitch" data-i18n="pitch"></p>
+      <a class="hero-cta" href="#signup" data-i18n="heroCta"></a>
+    </div>
+    <a class="scroll-hint" href="#features" aria-label="Scroll">&darr;</a>
   </section>
 
-  <p class="section-title" data-i18n="featuresTitle"></p>
-  <section class="features">
-    <div class="feature">
-      <img src="screenshots/sun.png" alt="Inspeção do Sol em 3D, Astrovision AR" loading="lazy">
-      <div><h3 data-i18n="feature1Title"></h3><p data-i18n="feature1Desc"></p></div>
+  <section class="snap-section" id="features">
+    <p class="section-title" data-i18n="featuresTitle"></p>
+    <div class="features">
+      <div class="feature">
+        <img src="screenshots/sun.png" alt="Inspeção do Sol em 3D, Astrovision AR" loading="lazy">
+        <div><h3 data-i18n="feature1Title"></h3><p data-i18n="feature1Desc"></p></div>
+      </div>
+      <div class="feature">
+        <img src="screenshots/library.png" alt="Biblioteca Astronômica, Astrovision AR" loading="lazy">
+        <div><h3 data-i18n="feature2Title"></h3><p data-i18n="feature2Desc"></p></div>
+      </div>
+      <div class="feature">
+        <img src="screenshots/comparator.png" alt="Comparador de planetas, Astrovision AR" loading="lazy">
+        <div><h3 data-i18n="feature3Title"></h3><p data-i18n="feature3Desc"></p></div>
+      </div>
     </div>
-    <div class="feature">
-      <img src="screenshots/library.png" alt="Biblioteca Astronômica, Astrovision AR" loading="lazy">
-      <div><h3 data-i18n="feature2Title"></h3><p data-i18n="feature2Desc"></p></div>
-    </div>
-    <div class="feature">
-      <img src="screenshots/comparator.png" alt="Comparador de planetas, Astrovision AR" loading="lazy">
-      <div><h3 data-i18n="feature3Title"></h3><p data-i18n="feature3Desc"></p></div>
-    </div>
+    <a class="scroll-hint" href="#signup" aria-label="Scroll">&darr;</a>
   </section>
 
-  <section class="form-section">
+  <section class="snap-section form-section">
     <div class="card" id="signup">
       <div class="corner-tl"></div><div class="corner-tr"></div><div class="corner-bl"></div><div class="corner-br"></div>
       <div class="eyebrow" style="justify-content:center;"><span class="dot"></span><span data-i18n="formEyebrow"></span></div>
