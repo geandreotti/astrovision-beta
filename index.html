@@ -325,7 +325,8 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
   background-repeat:no-repeat; background-position:right 12px center; padding-right:32px;
 }
 .field select option{ color:#0e1720; }
-#google-signin-btn{ display:flex; justify-content:center; }
+#google-signin-btn{ display:flex; justify-content:center; width:100%; overflow:hidden; }
+#google-signin-btn > div{ max-width:100%; }
 .google-verified{
   display:flex; align-items:center; gap:8px;
   background:rgba(123,224,138,0.1); border:1px solid rgba(123,224,138,0.35);
@@ -734,6 +735,8 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
     return JSON.parse(json);
   }
 
+  var LOCALE_LANG_NAMES = { pt: 'Português', en: 'English', es: 'Español', fr: 'Français', de: 'Deutsch', it: 'Italiano', ja: '日本語', ko: '한국어', zh: '中文' };
+
   function handleGoogleCredential(response){
     var payload;
     try{ payload = decodeJwtPayload(response.credential); }
@@ -744,6 +747,30 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
     document.getElementById('google-email-display').textContent = payload.email;
     document.getElementById('google-signin-btn').hidden = true;
     document.getElementById('google-signed-in').hidden = false;
+
+    var nameField = document.getElementById('f-name');
+    if(nameField && !nameField.value && payload.name){
+      nameField.value = payload.name;
+    }
+
+    if(payload.locale){
+      var parts = payload.locale.split(/[-_]/);
+      var langCode = parts[0];
+      var regionCode = parts[1];
+
+      var langField = document.getElementById('f-lang');
+      if(langField && !langField.value){
+        langField.value = LOCALE_LANG_NAMES[langCode] || payload.locale;
+      }
+
+      var countryField = document.getElementById('f-country');
+      if(countryField && !countryField.value && regionCode){
+        try{
+          var regionNames = new Intl.DisplayNames([langCode || 'en'], {type:'region'});
+          countryField.value = regionNames.of(regionCode.toUpperCase());
+        }catch(e){}
+      }
+    }
   }
 
   function initGoogleSignIn(){
@@ -753,9 +780,9 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
       callback: handleGoogleCredential
     });
     var btnContainer = document.getElementById('google-signin-btn');
-    var btnWidth = Math.min(300, btnContainer.clientWidth || 300);
+    var btnWidth = Math.max(200, Math.min(280, (btnContainer.clientWidth || 280) - 8));
     google.accounts.id.renderButton(btnContainer, {
-      theme: 'filled_black', size: 'large', shape: 'pill', text: 'continue_with', width: btnWidth
+      theme: 'filled_black', size: 'large', shape: 'pill', text: 'signin', width: btnWidth
     });
   }
 
