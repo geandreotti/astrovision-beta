@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
 <style>
 :root{
-  color-scheme: dark light;
+  color-scheme: dark;
   --bg:#070a13;
   --panel:rgba(18,24,38,0.72);
   --panel-border:rgba(112,214,224,0.28);
@@ -22,22 +22,6 @@
   --danger:#ff8a7a;
   --field-bg:rgba(255,255,255,0.04);
   --field-border:rgba(147,167,184,0.28);
-}
-@media (prefers-color-scheme: light){
-  :root{
-    --bg:#eef3f6;
-    --panel:rgba(255,255,255,0.82);
-    --panel-border:rgba(30,120,130,0.22);
-    --text:#0e1720;
-    --text-soft:#4c5c68;
-    --cyan:#0f8f96;
-    --cyan-dim:rgba(15,143,150,0.12);
-    --warm:#c9611c;
-    --success:#227a3a;
-    --danger:#b23b2c;
-    --field-bg:rgba(0,0,0,0.03);
-    --field-border:rgba(30,50,60,0.22);
-  }
 }
 *{box-sizing:border-box;}
 html,body{height:100%; margin:0;}
@@ -84,7 +68,6 @@ img{max-width:100%;}
 @media (prefers-reduced-motion: reduce){
   .stars-far, .stars-near{animation:none;}
 }
-@media (prefers-color-scheme: light){ .stars{opacity:.3;} }
 .nebula{
   position:fixed; inset:0; z-index:0; pointer-events:none;
   background:
