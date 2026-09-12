@@ -4,19 +4,19 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Astrovision AR — Programa Beta</title>
-<meta name="description" content="Inscreva-se pro teste fechado do Astrovision AR, um jogo da Chrome Hypercube.">
+<meta name="description" content="Inscreva-se pro teste fechado do Astrovision AR, um aplicativo da Chrome Hypercube.">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://geandreotti.github.io/astrovision-beta/">
 <meta property="og:title" content="Astrovision AR — Programa Beta">
-<meta property="og:description" content="Ajude a testar o Astrovision AR antes do lançamento. Um jogo da Chrome Hypercube.">
-<meta property="og:image" content="https://geandreotti.github.io/astrovision-beta/og-image.svg">
+<meta property="og:description" content="Ajude a testar o Astrovision AR antes do lançamento. Um aplicativo da Chrome Hypercube.">
+<meta property="og:image" content="https://geandreotti.github.io/astrovision-beta/screenshots/banner-pt.jpg">
 <meta property="og:locale" content="pt_BR">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Astrovision AR — Programa Beta">
 <meta name="twitter:description" content="Ajude a testar o Astrovision AR antes do lançamento.">
-<meta name="twitter:image" content="https://geandreotti.github.io/astrovision-beta/og-image.svg">
+<meta name="twitter:image" content="https://geandreotti.github.io/astrovision-beta/screenshots/banner-pt.jpg">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
 <style>
 :root{
@@ -212,6 +212,17 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
   margin:0 0 30px;
   width:100%;
 }
+.banner{
+  width:100%; border-radius:14px;
+  border:1px solid var(--panel-border);
+  box-shadow:0 20px 50px -20px rgba(0,0,0,0.6);
+  margin-bottom:20px;
+}
+.about-copy{
+  font-size:14.5px; line-height:1.7; color:var(--text-soft);
+  text-align:center; max-width:560px;
+  margin:0 auto 32px;
+}
 .features{ display:flex; flex-direction:column; gap:20px; width:100%; }
 .feature{
   display:grid; grid-template-columns:132px 1fr; gap:18px; align-items:center;
@@ -379,6 +390,8 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
 
   <section class="snap-section" id="features">
     <p class="section-title" data-i18n="featuresTitle"></p>
+    <img class="banner" id="banner-img" src="screenshots/banner-pt.jpg" alt="Astrovision AR — Explore o universo em 3D" loading="lazy">
+    <p class="about-copy" data-i18n="aboutCopy"></p>
     <div class="features">
       <div class="feature">
         <img src="screenshots/sun.png" alt="Inspeção do Sol em 3D, Astrovision AR" loading="lazy">
@@ -469,9 +482,10 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
     pt: {
       eyebrow: 'ASTROVISION AR · PROGRAMA BETA',
       h1a: 'Ajude a testar o ', h1b: ' antes do lançamento',
-      pitch: 'Estamos recrutando um grupo pequeno pra o teste fechado no Google Play. Você vê o jogo antes de todo mundo, e a gente ganha seu olhar de fora pra polir antes do lançamento.',
+      pitch: 'Estamos recrutando um grupo pequeno pra o teste fechado no Google Play. Você tem acesso ao aplicativo antes de todo mundo, e a gente ganha seu olhar de fora pra polir antes do lançamento.',
       heroCta: 'Quero testar',
-      featuresTitle: 'O que você vai testar',
+      featuresTitle: 'Sobre o Astrovision AR',
+      aboutCopy: 'Astrovision AR é um app de exploração espacial: gire e inspecione planetas, luas, estrelas, galáxias e buracos negros em 3D e realidade aumentada, com dados astronômicos reais. Compare corpos celestes lado a lado e mergulhe na Biblioteca Astronômica pra aprender mais sobre cada um.',
       feature1Title: 'Inspecione em 3D e AR',
       feature1Desc: 'Gire, dê zoom e veja dados reais — temperatura, diâmetro, composição atmosférica — pra cada planeta, lua, estrela e galáxia.',
       feature2Title: 'Biblioteca Astronômica',
@@ -495,7 +509,7 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
       submitBtn: 'Quero testar',
       submitting: 'Enviando…',
       footNote: 'Seus dados são usados só pra te convidar no teste fechado do Google Play.',
-      credit: 'Astrovision AR · um jogo da Chrome Hypercube',
+      credit: 'Astrovision AR · um aplicativo da Chrome Hypercube',
       successTitle: 'Inscrição recebida',
       successP1: 'Você entrou na lista do teste fechado do Astrovision AR.',
       successP2: 'Fique de olho no e-mail que você cadastrou — o convite do Google Play chega por lá.',
@@ -507,9 +521,10 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
     en: {
       eyebrow: 'ASTROVISION AR · BETA PROGRAM',
       h1a: 'Help test ', h1b: ' before launch',
-      pitch: 'We’re recruiting a small group for the Google Play closed test. You see the game before everyone else, and we get an outside eye to polish it before launch.',
+      pitch: 'We’re recruiting a small group for the Google Play closed test. You get access to the app before everyone else, and we get an outside eye to polish it before launch.',
       heroCta: 'I want to test',
-      featuresTitle: 'What you’ll be testing',
+      featuresTitle: 'About Astrovision AR',
+      aboutCopy: 'Astrovision AR is a space-exploration app: rotate and inspect planets, moons, stars, galaxies, and black holes in 3D and augmented reality, backed by real astronomical data. Compare celestial bodies side by side and dive into the Astronomical Library to learn more about each one.',
       feature1Title: 'Inspect in 3D and AR',
       feature1Desc: 'Rotate, zoom, and see real data — temperature, diameter, atmospheric composition — for every planet, moon, star, and galaxy.',
       feature2Title: 'Astronomical Library',
@@ -533,7 +548,7 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
       submitBtn: 'I want to test',
       submitting: 'Sending…',
       footNote: 'Your info is only used to invite you to the Google Play closed test.',
-      credit: 'Astrovision AR · a Chrome Hypercube game',
+      credit: 'Astrovision AR · a Chrome Hypercube app',
       successTitle: 'Signup received',
       successP1: 'You’re on the list for the Astrovision AR closed test.',
       successP2: 'Keep an eye on the e-mail you signed up with — the Google Play invite lands there.',
@@ -572,6 +587,7 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
       if(s[key] != null) el.placeholder = s[key];
     });
     document.getElementById('lang-toggle').textContent = s.toggleLabel;
+    document.getElementById('banner-img').src = lang === 'pt' ? 'screenshots/banner-pt.jpg' : 'screenshots/banner-en.jpg';
 
     var brandSel = document.getElementById('f-brand');
     var prevBrand = brandSel.value;
