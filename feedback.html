@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Astrovision AR — Feedback</title>
+<meta name="description" content="Manda seu feedback sobre o Astrovision AR, um aplicativo da Chrome Hypercube.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://geandreotti.github.io/astrovision-beta/feedback.html">
+<meta property="og:title" content="Astrovision AR — Feedback">
+<meta property="og:description" content="Manda seu feedback sobre o Astrovision AR pra equipe da Chrome Hypercube.">
+<meta property="og:locale" content="pt_BR">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<style>
+:root{
+  color-scheme: dark;
+  --bg:#070a13;
+  --panel:rgba(18,24,38,0.72);
+  --panel-border:rgba(112,214,224,0.28);
+  --text:#eaf3f7;
+  --text-soft:#93a7b8;
+  --cyan:#52e3e8;
+  --cyan-dim:rgba(82,227,232,0.15);
+  --warm:#ff9a4d;
+  --success:#7be08a;
+  --danger:#ff8a7a;
+  --field-bg:rgba(255,255,255,0.04);
+  --field-border:rgba(147,167,184,0.28);
+}
+*{box-sizing:border-box;}
+html,body{height:100%; margin:0;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  position:relative;
+  overflow-x:hidden;
+  font-family:'Manrope', system-ui, sans-serif;
+}
+.stars{
+  position:fixed; inset:-20% -20% -20% -20%; z-index:0; pointer-events:none;
+  background-repeat:repeat;
+  opacity:.7;
+}
+.stars-far{
+  background-image:
+    radial-gradient(1px 1px at 8% 12%, rgba(255,255,255,.65), transparent),
+    radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,.7), transparent),
+    radial-gradient(1px 1px at 33% 62%, rgba(255,255,255,.5), transparent),
+    radial-gradient(1px 1px at 65% 15%, rgba(255,255,255,.55), transparent),
+    radial-gradient(1px 1px at 80% 60%, rgba(255,255,255,.6), transparent),
+    radial-gradient(1px 1px at 40% 75%, rgba(255,255,255,.5), transparent),
+    radial-gradient(1px 1px at 10% 85%, rgba(255,255,255,.55), transparent),
+    radial-gradient(1px 1px at 90% 40%, rgba(255,255,255,.4), transparent),
+    radial-gradient(1px 1px at 55% 50%, rgba(255,255,255,.5), transparent),
+    radial-gradient(1px 1px at 30% 10%, rgba(255,255,255,.4), transparent);
+  background-size:420px 420px;
+  animation:drift-far 90s linear infinite;
+}
+.stars-mid{
+  background-image:
+    radial-gradient(1.3px 1.3px at 15% 45%, rgba(255,255,255,.75), transparent),
+    radial-gradient(1.2px 1.2px at 38% 18%, rgba(255,255,255,.6), transparent),
+    radial-gradient(1.3px 1.3px at 58% 70%, rgba(255,255,255,.7), transparent),
+    radial-gradient(1.2px 1.2px at 78% 32%, rgba(255,255,255,.55), transparent),
+    radial-gradient(1.3px 1.3px at 92% 78%, rgba(255,255,255,.65), transparent),
+    radial-gradient(1.2px 1.2px at 25% 88%, rgba(255,255,255,.55), transparent);
+  background-size:380px 380px;
+  animation:drift-mid 55s linear infinite;
+}
+.stars-near{
+  background-image:
+    radial-gradient(1.8px 1.8px at 12% 22%, rgba(255,255,255,.95), transparent),
+    radial-gradient(1.5px 1.5px at 72% 8%, rgba(255,255,255,.85), transparent),
+    radial-gradient(1.8px 1.8px at 88% 68%, rgba(255,255,255,.9), transparent),
+    radial-gradient(1.5px 1.5px at 45% 82%, rgba(255,255,255,.8), transparent),
+    radial-gradient(1.8px 1.8px at 5% 55%, rgba(255,255,255,.85), transparent),
+    radial-gradient(1.5px 1.5px at 60% 35%, rgba(255,255,255,.7), transparent);
+  background-size:320px 320px;
+  animation:drift-near 32s linear infinite, twinkle 4.5s ease-in-out infinite;
+}
+@keyframes drift-far{ from{transform:translate3d(0,0,0);} to{transform:translate3d(-420px,420px,0);} }
+@keyframes drift-mid{ from{transform:translate3d(0,0,0);} to{transform:translate3d(380px,-380px,0);} }
+@keyframes drift-near{ from{transform:translate3d(0,0,0);} to{transform:translate3d(-320px,-320px,0);} }
+@keyframes twinkle{ 0%,100%{opacity:.85;} 50%{opacity:.45;} }
+@media (prefers-reduced-motion: reduce){
+  .stars-far, .stars-mid, .stars-near{animation:none; opacity:0;}
+}
+.nebula{
+  position:fixed; inset:0; z-index:0; pointer-events:none;
+  background:
+    radial-gradient(600px 420px at 12% -8%, rgba(82,227,232,0.16), transparent 60%),
+    radial-gradient(560px 460px at 105% 15%, rgba(255,154,77,0.13), transparent 60%),
+    radial-gradient(700px 500px at 50% 115%, rgba(82,227,232,0.10), transparent 60%);
+}
+.page{
+  position:relative; z-index:1;
+  max-width:520px;
+  margin:0 auto;
+  min-height:100%;
+  display:flex; flex-direction:column; justify-content:center;
+  padding:52px 20px 64px;
+}
+.top-row{display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:22px;}
+.eyebrow{
+  font-family:'IBM Plex Mono', monospace;
+  font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--cyan);
+  display:flex; align-items:center; gap:8px;
+}
+.eyebrow .dot{
+  width:6px; height:6px; border-radius:50%; background:var(--cyan);
+  box-shadow:0 0 8px 1px var(--cyan);
+  animation:pulse 2.2s ease-in-out infinite;
+}
+@keyframes pulse{ 0%,100%{opacity:.4;} 50%{opacity:1;} }
+@media (prefers-reduced-motion: reduce){ .eyebrow .dot{animation:none;} }
+.lang-toggle{
+  flex-shrink:0;
+  font-family:'IBM Plex Mono', monospace;
+  font-size:11px; font-weight:600; letter-spacing:.04em;
+  color:var(--cyan);
+  background:var(--cyan-dim);
+  border:1px solid var(--panel-border);
+  border-radius:99px;
+  padding:5px 11px;
+  cursor:pointer;
+}
+h1{
+  font-family:'Rajdhani', system-ui, sans-serif;
+  font-weight:700;
+  font-size:clamp(26px,6vw,32px);
+  letter-spacing:.01em;
+  line-height:1.1;
+  margin:0 0 10px;
+  text-wrap:balance;
+}
+h1 .accent{color:var(--cyan);}
+.gradient-rule{
+  height:2px; width:64px; border-radius:2px; margin-bottom:16px;
+  background:linear-gradient(90deg, var(--cyan), var(--warm));
+}
+.pitch{
+  font-size:14px; line-height:1.6; color:var(--text-soft);
+  margin:0 0 24px;
+}
+.card{
+  width:100%;
+  background:var(--panel);
+  border:1px solid var(--panel-border);
+  border-radius:18px;
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  box-shadow:0 0 0 1px rgba(82,227,232,0.05), 0 30px 80px -30px rgba(0,0,0,0.6), 0 0 60px -20px rgba(82,227,232,0.15);
+  padding:26px;
+  position:relative;
+}
+.corner-tl, .corner-tr, .corner-bl, .corner-br{
+  content:""; position:absolute; width:16px; height:16px;
+  border-color:var(--cyan); opacity:.65;
+}
+.corner-tl{top:-1px; left:-1px; border-top:2px solid; border-left:2px solid; border-top-left-radius:8px;}
+.corner-tr{top:-1px; right:-1px; border-top:2px solid; border-right:2px solid; border-top-right-radius:8px;}
+.corner-bl{bottom:-1px; left:-1px; border-bottom:2px solid; border-left:2px solid; border-bottom-left-radius:8px;}
+.corner-br{bottom:-1px; right:-1px; border-bottom:2px solid; border-right:2px solid; border-bottom-right-radius:8px;}
+.field{margin-bottom:16px;}
+.field label{
+  display:block; font-size:11.5px; font-weight:600;
+  letter-spacing:.03em; text-transform:uppercase;
+  color:var(--text-soft); margin-bottom:6px;
+}
+.field input, .field select, .field textarea{
+  width:100%;
+  font-family:'IBM Plex Mono', monospace;
+  font-size:14px;
+  color:var(--text);
+  background:var(--field-bg);
+  border:1px solid var(--field-border);
+  border-radius:9px;
+  padding:11px 12px;
+}
+.field textarea{
+  font-family:'Manrope', sans-serif;
+  resize:vertical; min-height:100px; line-height:1.5;
+}
+.field select{ appearance:none; -webkit-appearance:none;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%2393a7b8'><path d='M5.5 7.5l4.5 4.5 4.5-4.5' stroke='%2393a7b8' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-repeat:no-repeat; background-position:right 12px center; padding-right:32px;
+}
+.field select option{ color:#0e1720; }
+.field input::placeholder, .field textarea::placeholder{color:var(--text-soft); opacity:.7; font-family:'Manrope',sans-serif;}
+.field input:focus, .field select:focus, .field textarea:focus{outline:none; border-color:var(--cyan); box-shadow:0 0 0 3px var(--cyan-dim);}
+#google-signin-btn{ display:flex; justify-content:center; width:100%; overflow:hidden; }
+#google-signin-btn > div{ max-width:100%; border-radius:999px; overflow:hidden; background:#131314; }
+#google-signin-btn iframe{ border:none !important; outline:none !important; }
+.google-verified{
+  display:flex; align-items:center; gap:8px;
+  background:rgba(123,224,138,0.1); border:1px solid rgba(123,224,138,0.35);
+  border-radius:9px; padding:10px 12px;
+  font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--text);
+}
+.google-verified .check-icon{ color:var(--success); font-weight:700; flex-shrink:0; }
+.google-verified span#google-email-display{ flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.google-verified button{
+  flex-shrink:0; background:none; border:none; color:var(--text-soft);
+  font-family:'Manrope', sans-serif; font-size:11.5px; text-decoration:underline;
+  cursor:pointer; padding:2px;
+}
+.submit-btn{
+  width:100%; margin-top:6px;
+  font-family:'Rajdhani', sans-serif;
+  font-weight:700; font-size:16px; letter-spacing:.03em;
+  text-transform:uppercase;
+  color:#05171a;
+  background:linear-gradient(90deg, var(--cyan), #8ff0f3);
+  border:none; border-radius:10px;
+  padding:13px 16px;
+  cursor:pointer;
+  box-shadow:0 8px 24px -10px rgba(82,227,232,0.55);
+}
+.submit-btn:disabled{opacity:.55; cursor:default;}
+.submit-btn:active:not(:disabled){transform:translateY(1px);}
+.error-msg{font-size:12.5px; color:var(--danger); margin-top:10px; min-height:1em;}
+.foot-row{
+  margin-top:18px; padding-top:16px;
+  border-top:1px solid var(--panel-border);
+  text-align:center;
+}
+.foot-note{font-size:11.5px; color:var(--text-soft); line-height:1.5;}
+.credit{
+  margin-top:16px;
+  font-family:'IBM Plex Mono', monospace;
+  font-size:10.5px; letter-spacing:.03em;
+  color:var(--text-soft); opacity:.6;
+  text-align:center;
+}
+.success{text-align:center; padding:18px 4px 6px;}
+.success .ring{
+  width:56px; height:56px; margin:0 auto 16px;
+  border-radius:50%;
+  border:2px solid var(--success);
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 0 24px -4px var(--success);
+}
+.success .ring svg{width:24px;height:24px;stroke:var(--success);}
+.success h2{font-family:'Rajdhani', sans-serif; font-weight:700; font-size:22px; margin:0 0 8px;}
+.success p{font-size:13.5px; color:var(--text-soft); line-height:1.6; margin:0 0 4px;}
+[hidden]{display:none !important;}
+</style>
+</head>
+<body>
+<div class="stars stars-far"></div>
+<div class="stars stars-mid"></div>
+<div class="stars stars-near"></div>
+<div class="nebula"></div>
+
+<div class="page">
+  <div class="top-row">
+    <div class="eyebrow"><span class="dot"></span><span data-i18n="eyebrow"></span></div>
+    <button type="button" class="lang-toggle" id="lang-toggle">EN</button>
+  </div>
+
+  <h1><span data-i18n="h1a"></span><span class="accent">Astrovision AR</span><span data-i18n="h1b"></span></h1>
+  <div class="gradient-rule"></div>
+  <p class="pitch" data-i18n="pitch"></p>
+
+  <div class="card" id="feedback-card">
+    <div class="corner-tl"></div><div class="corner-tr"></div><div class="corner-bl"></div><div class="corner-br"></div>
+
+    <form id="feedback-form"
+          action="https://docs.google.com/forms/d/e/1FAIpQLSe8l1VJ_lkXlcWKzLCGNZ26ubHORVKa9pwv6CWDkU82GN1GnQ/formResponse"
+          method="POST" target="hidden_iframe" novalidate>
+
+      <div class="field">
+        <label data-i18n="labelEmail"></label>
+        <div id="google-signin-btn"></div>
+        <div id="google-signed-in" class="google-verified" hidden>
+          <span class="check-icon">&#10003;</span>
+          <span id="google-email-display"></span>
+          <button type="button" id="google-switch-account" data-i18n="googleSwitch"></button>
+        </div>
+        <input type="hidden" id="f-email" name="entry.229702031" required>
+      </div>
+
+      <input type="hidden" id="f-name" name="entry.2108380560">
+
+      <div class="field">
+        <label for="f-type" data-i18n="labelType"></label>
+        <select id="f-type" name="entry.1326134951" required></select>
+      </div>
+
+      <div class="field">
+        <label for="f-message" data-i18n="labelMessage"></label>
+        <textarea id="f-message" name="entry.1220084663" rows="5" required></textarea>
+      </div>
+
+      <input type="hidden" id="f-tech" name="entry.1682649063">
+
+      <button type="submit" class="submit-btn" id="submit-btn" data-i18n="submitBtn"></button>
+      <div class="error-msg" id="error-msg"></div>
+    </form>
+
+    <div class="success" id="success-panel" hidden>
+      <div class="ring"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12.5l5 5L20 6" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <h2 data-i18n="successTitle"></h2>
+      <p data-i18n="successP1"></p>
+      <p data-i18n="successP2"></p>
+    </div>
+
+    <div class="foot-row">
+      <div class="foot-note" data-i18n="footNote"></div>
+    </div>
+    <div class="credit" data-i18n="credit"></div>
+  </div>
+</div>
+
+<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+
+<script>
+(function(){
+  var TYPE_KEYS = ['bug','suggestion','praise','question','other'];
+
+  var STRINGS = {
+    pt: {
+      eyebrow: 'ASTROVISION AR · FEEDBACK',
+      h1a: 'Seu feedback ajuda a melhorar o ', h1b: '',
+      pitch: 'Bug, sugestão, elogio ou dúvida — conta pra gente. Sua opinião ajuda a deixar o Astrovision AR melhor a cada versão.',
+      labelEmail: 'Conta do Google',
+      googleSwitch: 'trocar de conta',
+      errorGoogleRequired: 'Entra com sua conta do Google pra continuar.',
+      labelType: 'Tipo de feedback',
+      typeOptions: {
+        bug: 'Encontrei um bug',
+        suggestion: 'Tenho uma sugestão',
+        praise: 'Só um elogio',
+        question: 'Tenho uma dúvida',
+        other: 'Outro'
+      },
+      labelMessage: 'Mensagem',
+      messagePlaceholders: {
+        bug: 'O que você esperava que acontecesse? O que aconteceu de verdade? Em qual tela?',
+        suggestion: 'O que você gostaria de ver ou mudar no app?',
+        praise: 'Conta pra gente o que você curtiu!',
+        question: 'Qual é a sua dúvida?',
+        other: 'Escreve sua mensagem aqui...'
+      },
+      submitBtn: 'Enviar feedback',
+      submitting: 'Enviando…',
+      errorRequired: 'Preenche a mensagem pra continuar.',
+      footNote: 'Seu feedback vai direto pra equipe do Astrovision AR.',
+      credit: 'Astrovision AR · um aplicativo da Chrome Hypercube',
+      successTitle: 'Feedback enviado!',
+      successP1: 'Muito obrigado — a equipe vai dar uma olhada com carinho.',
+      successP2: 'Se quiser mandar outro feedback, é só recarregar a página.',
+      toggleLabel: 'EN'
+    },
+    en: {
+      eyebrow: 'ASTROVISION AR · FEEDBACK',
+      h1a: 'Your feedback helps improve ', h1b: '',
+      pitch: 'Bug, suggestion, praise, or question — tell us. Your input helps make Astrovision AR better with every release.',
+      labelEmail: 'Google account',
+      googleSwitch: 'switch account',
+      errorGoogleRequired: 'Sign in with your Google account to continue.',
+      labelType: 'Feedback type',
+      typeOptions: {
+        bug: 'I found a bug',
+        suggestion: 'I have a suggestion',
+        praise: 'Just a compliment',
+        question: 'I have a question',
+        other: 'Other'
+      },
+      labelMessage: 'Message',
+      messagePlaceholders: {
+        bug: 'What did you expect to happen? What actually happened? Which screen?',
+        suggestion: 'What would you like to see or change in the app?',
+        praise: 'Tell us what you liked!',
+        question: 'What is your question?',
+        other: 'Write your message here...'
+      },
+      submitBtn: 'Send feedback',
+      submitting: 'Sending…',
+      errorRequired: 'Fill in the message to continue.',
+      footNote: 'Your feedback goes straight to the Astrovision AR team.',
+      credit: 'Astrovision AR · a Chrome Hypercube app',
+      successTitle: 'Feedback sent!',
+      successP1: 'Thank you — the team will take a close look.',
+      successP2: 'Want to send another one? Just reload the page.',
+      toggleLabel: 'PT'
+    }
+  };
+
+  var currentLang = (navigator.language || 'pt').toLowerCase().indexOf('pt') === 0 ? 'pt' : 'en';
+
+  function fillTypeSelect(lang){
+    var select = document.getElementById('f-type');
+    var prevIndex = select.selectedIndex >= 0 ? select.selectedIndex : 0;
+    select.innerHTML = '';
+    TYPE_KEYS.forEach(function(key){
+      var o = document.createElement('option');
+      o.value = STRINGS[lang].typeOptions[key];
+      o.setAttribute('data-key', key);
+      o.textContent = STRINGS[lang].typeOptions[key];
+      select.appendChild(o);
+    });
+    select.selectedIndex = prevIndex;
+    updateMessagePlaceholder();
+  }
+
+  function updateMessagePlaceholder(){
+    var select = document.getElementById('f-type');
+    var opt = select.options[select.selectedIndex];
+    var key = opt ? opt.getAttribute('data-key') : 'other';
+    document.getElementById('f-message').placeholder = STRINGS[currentLang].messagePlaceholders[key] || '';
+  }
+
+  function applyLang(lang){
+    currentLang = lang;
+    document.documentElement.lang = lang === 'pt' ? 'pt-BR' : 'en';
+    var s = STRINGS[lang];
+    document.querySelectorAll('[data-i18n]').forEach(function(el){
+      var key = el.getAttribute('data-i18n');
+      if(s[key] != null) el.textContent = s[key];
+    });
+    document.getElementById('lang-toggle').textContent = s.toggleLabel;
+    fillTypeSelect(lang);
+  }
+
+  document.getElementById('lang-toggle').addEventListener('click', function(){
+    applyLang(currentLang === 'pt' ? 'en' : 'pt');
+  });
+  document.getElementById('f-type').addEventListener('change', updateMessagePlaceholder);
+
+  applyLang(currentLang);
+
+  function decodeJwtPayload(token){
+    var base64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+    var json = decodeURIComponent(atob(base64).split('').map(function(c){
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+    return JSON.parse(json);
+  }
+
+  function handleGoogleCredential(response){
+    var payload;
+    try{ payload = decodeJwtPayload(response.credential); }
+    catch(e){ return; }
+    if(!payload || !payload.email) return;
+
+    document.getElementById('f-email').value = payload.email;
+    document.getElementById('f-name').value = payload.name || '';
+    document.getElementById('google-email-display').textContent = payload.email;
+    document.getElementById('google-signin-btn').hidden = true;
+    document.getElementById('google-signed-in').hidden = false;
+  }
+
+  function resetGoogleSignIn(){
+    document.getElementById('f-email').value = '';
+    document.getElementById('f-name').value = '';
+    document.getElementById('google-signed-in').hidden = true;
+    document.getElementById('google-signin-btn').hidden = false;
+    if(window.google && window.google.accounts && window.google.accounts.id){
+      google.accounts.id.disableAutoSelect();
+    }
+  }
+
+  function initGoogleSignIn(){
+    if(!window.google || !window.google.accounts || !window.google.accounts.id) return;
+    google.accounts.id.initialize({
+      client_id: '394997597989-ld5v35n0oq1nqi2a46n4d34msnm533fg.apps.googleusercontent.com',
+      callback: handleGoogleCredential,
+      use_fedcm_for_button: false
+    });
+    var btnContainer = document.getElementById('google-signin-btn');
+    var btnWidth = Math.max(200, Math.min(280, (btnContainer.clientWidth || 280) - 8));
+    google.accounts.id.renderButton(btnContainer, {
+      theme: 'filled_black', size: 'large', shape: 'pill', text: 'signin', width: btnWidth
+    });
+  }
+
+  if(window.google && window.google.accounts){
+    initGoogleSignIn();
+  } else {
+    window.addEventListener('load', initGoogleSignIn);
+  }
+
+  document.getElementById('google-switch-account').addEventListener('click', resetGoogleSignIn);
+
+  document.getElementById('f-tech').value =
+    navigator.userAgent + ' | ' + screen.width + 'x' + screen.height + ' | ' + navigator.language;
+
+  var form = document.getElementById('feedback-form');
+  var submitBtn = document.getElementById('submit-btn');
+  var errorMsg = document.getElementById('error-msg');
+  var formSubmitted = false;
+
+  form.addEventListener('submit', function(e){
+    var email = document.getElementById('f-email').value;
+    if(!email){
+      e.preventDefault();
+      errorMsg.textContent = STRINGS[currentLang].errorGoogleRequired;
+      return;
+    }
+    if(!form.checkValidity()){
+      e.preventDefault();
+      errorMsg.textContent = STRINGS[currentLang].errorRequired;
+      return;
+    }
+    errorMsg.textContent = '';
+    formSubmitted = true;
+    submitBtn.disabled = true;
+    submitBtn.textContent = STRINGS[currentLang].submitting;
+    // native submit proceeds to the hidden iframe from here
+  });
+
+  document.getElementById('hidden_iframe').addEventListener('load', function(){
+    if(!formSubmitted) return;
+    form.hidden = true;
+    document.getElementById('success-panel').hidden = false;
+  });
+})();
+</script>
+</body>
+</html>

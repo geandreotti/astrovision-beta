@@ -842,7 +842,8 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
     if(!window.google || !window.google.accounts || !window.google.accounts.id) return;
     google.accounts.id.initialize({
       client_id: '394997597989-ld5v35n0oq1nqi2a46n4d34msnm533fg.apps.googleusercontent.com',
-      callback: handleGoogleCredential
+      callback: handleGoogleCredential,
+      use_fedcm_for_button: false
     });
     var btnContainer = document.getElementById('google-signin-btn');
     var btnWidth = Math.max(200, Math.min(280, (btnContainer.clientWidth || 280) - 8));
