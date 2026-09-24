@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Astrovision AR — Política de Privacidade</title>
+<meta name="description" content="Política de privacidade do Astrovision AR, um aplicativo da Chrome Hypercube.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://geandreotti.github.io/astrovision-beta/privacy.html">
+<meta property="og:title" content="Astrovision AR — Política de Privacidade">
+<meta property="og:description" content="Política de privacidade do Astrovision AR, um aplicativo da Chrome Hypercube.">
+<meta property="og:locale" content="pt_BR">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+:root{
+  color-scheme: dark;
+  --bg:#070a13;
+  --panel:rgba(18,24,38,0.72);
+  --panel-border:rgba(112,214,224,0.28);
+  --text:#eaf3f7;
+  --text-soft:#93a7b8;
+  --cyan:#52e3e8;
+  --cyan-dim:rgba(82,227,232,0.15);
+  --warm:#ff9a4d;
+  --success:#7be08a;
+  --danger:#ff8a7a;
+  --field-bg:rgba(255,255,255,0.04);
+  --field-border:rgba(147,167,184,0.28);
+}
+*{box-sizing:border-box;}
+html,body{height:100%; margin:0;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  position:relative;
+  overflow-x:hidden;
+  font-family:'Manrope', system-ui, sans-serif;
+}
+.stars{
+  position:fixed; inset:-20% -20% -20% -20%; z-index:0; pointer-events:none;
+  background-repeat:repeat;
+  opacity:.7;
+}
+.stars-far{
+  background-image:
+    radial-gradient(1px 1px at 8% 12%, rgba(255,255,255,.65), transparent),
+    radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,.7), transparent),
+    radial-gradient(1px 1px at 33% 62%, rgba(255,255,255,.5), transparent),
+    radial-gradient(1px 1px at 65% 15%, rgba(255,255,255,.55), transparent),
+    radial-gradient(1px 1px at 80% 60%, rgba(255,255,255,.6), transparent),
+    radial-gradient(1px 1px at 40% 75%, rgba(255,255,255,.5), transparent),
+    radial-gradient(1px 1px at 10% 85%, rgba(255,255,255,.55), transparent),
+    radial-gradient(1px 1px at 90% 40%, rgba(255,255,255,.4), transparent),
+    radial-gradient(1px 1px at 55% 50%, rgba(255,255,255,.5), transparent),
+    radial-gradient(1px 1px at 30% 10%, rgba(255,255,255,.4), transparent);
+  background-size:420px 420px;
+  animation:drift-far 90s linear infinite;
+}
+.stars-mid{
+  background-image:
+    radial-gradient(1.3px 1.3px at 15% 45%, rgba(255,255,255,.75), transparent),
+    radial-gradient(1.2px 1.2px at 38% 18%, rgba(255,255,255,.6), transparent),
+    radial-gradient(1.3px 1.3px at 58% 70%, rgba(255,255,255,.7), transparent),
+    radial-gradient(1.2px 1.2px at 78% 32%, rgba(255,255,255,.55), transparent),
+    radial-gradient(1.3px 1.3px at 92% 78%, rgba(255,255,255,.65), transparent),
+    radial-gradient(1.2px 1.2px at 25% 88%, rgba(255,255,255,.55), transparent);
+  background-size:380px 380px;
+  animation:drift-mid 55s linear infinite;
+}
+@keyframes drift-far{ from{transform:translate3d(0,0,0);} to{transform:translate3d(-420px,420px,0);} }
+@keyframes drift-mid{ from{transform:translate3d(0,0,0);} to{transform:translate3d(380px,-380px,0);} }
+@media (prefers-reduced-motion: reduce){
+  .stars-far, .stars-mid{animation:none; opacity:0;}
+}
+.nebula{
+  position:fixed; inset:0; z-index:0; pointer-events:none;
+  background:
+    radial-gradient(600px 420px at 12% -8%, rgba(82,227,232,0.16), transparent 60%),
+    radial-gradient(560px 460px at 105% 15%, rgba(255,154,77,0.13), transparent 60%),
+    radial-gradient(700px 500px at 50% 115%, rgba(82,227,232,0.10), transparent 60%);
+}
+.page{
+  position:relative; z-index:1;
+  max-width:720px;
+  margin:0 auto;
+  padding:52px 20px 64px;
+}
+.top-row{display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:22px;}
+.eyebrow{
+  font-family:'IBM Plex Mono', monospace;
+  font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--cyan);
+  display:flex; align-items:center; gap:8px;
+}
+.eyebrow .dot{
+  width:6px; height:6px; border-radius:50%; background:var(--cyan);
+  box-shadow:0 0 8px 1px var(--cyan);
+  animation:pulse 2.2s ease-in-out infinite;
+}
+@keyframes pulse{ 0%,100%{opacity:.4;} 50%{opacity:1;} }
+@media (prefers-reduced-motion: reduce){ .eyebrow .dot{animation:none;} }
+.lang-toggle{
+  flex-shrink:0;
+  font-family:'IBM Plex Mono', monospace;
+  font-size:11px; font-weight:600; letter-spacing:.04em;
+  color:var(--cyan);
+  background:var(--cyan-dim);
+  border:1px solid var(--panel-border);
+  border-radius:99px;
+  padding:5px 11px;
+  cursor:pointer;
+}
+h1{
+  font-family:'Rajdhani', system-ui, sans-serif;
+  font-weight:700;
+  font-size:clamp(26px,6vw,34px);
+  letter-spacing:.01em;
+  line-height:1.1;
+  margin:0 0 10px;
+  text-wrap:balance;
+}
+h1 .accent{color:var(--cyan);}
+.gradient-rule{
+  height:2px; width:64px; border-radius:2px; margin-bottom:16px;
+  background:linear-gradient(90deg, var(--cyan), var(--warm));
+}
+.pitch{
+  font-size:13.5px; line-height:1.6; color:var(--text-soft);
+  margin:0 0 24px;
+}
+.card{
+  width:100%;
+  background:var(--panel);
+  border:1px solid var(--panel-border);
+  border-radius:18px;
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  box-shadow:0 0 0 1px rgba(82,227,232,0.05), 0 30px 80px -30px rgba(0,0,0,0.6), 0 0 60px -20px rgba(82,227,232,0.15);
+  padding:30px 28px;
+  position:relative;
+}
+.corner-tl, .corner-tr, .corner-bl, .corner-br{
+  content:""; position:absolute; width:16px; height:16px;
+  border-color:var(--cyan); opacity:.65;
+}
+.corner-tl{top:-1px; left:-1px; border-top:2px solid; border-left:2px solid; border-top-left-radius:8px;}
+.corner-tr{top:-1px; right:-1px; border-top:2px solid; border-right:2px solid; border-top-right-radius:8px;}
+.corner-bl{bottom:-1px; left:-1px; border-bottom:2px solid; border-left:2px solid; border-bottom-left-radius:8px;}
+.corner-br{bottom:-1px; right:-1px; border-bottom:2px solid; border-right:2px solid; border-bottom-right-radius:8px;}
+.doc h2{
+  font-family:'Rajdhani', sans-serif; font-weight:700;
+  font-size:19px; letter-spacing:.01em;
+  color:var(--text);
+  margin:28px 0 10px;
+}
+.doc h2:first-child{margin-top:0;}
+.doc p{
+  font-size:14px; line-height:1.65; color:var(--text-soft);
+  margin:0 0 12px;
+}
+.doc ul{
+  margin:0 0 12px; padding-left:20px;
+}
+.doc li{
+  font-size:14px; line-height:1.65; color:var(--text-soft);
+  margin-bottom:8px;
+}
+.doc strong{color:var(--text); font-weight:600;}
+.doc a{color:var(--cyan);}
+.updated{
+  font-family:'IBM Plex Mono', monospace;
+  font-size:11px; color:var(--text-soft); opacity:.75;
+  margin-bottom:22px;
+}
+.foot-row{
+  margin-top:24px; padding-top:18px;
+  border-top:1px solid var(--panel-border);
+  text-align:center;
+}
+.foot-note{font-size:12px; color:var(--text-soft); line-height:1.5;}
+.foot-note a{color:var(--cyan);}
+.credit{
+  margin-top:16px;
+  font-family:'IBM Plex Mono', monospace;
+  font-size:10.5px; letter-spacing:.03em;
+  color:var(--text-soft); opacity:.6;
+  text-align:center;
+}
+[hidden]{display:none !important;}
+</style>
+</head>
+<body>
+<div class="stars stars-far"></div>
+<div class="stars stars-mid"></div>
+<div class="nebula"></div>
+
+<div class="page">
+  <div class="top-row">
+    <div class="eyebrow"><span class="dot"></span><span data-i18n="eyebrow"></span></div>
+    <button type="button" class="lang-toggle" id="lang-toggle">EN</button>
+  </div>
+
+  <h1><span data-i18n="h1a"></span><span class="accent">Astrovision AR</span></h1>
+  <div class="gradient-rule"></div>
+  <p class="pitch" data-i18n="pitch"></p>
+
+  <div class="card">
+    <div class="corner-tl"></div><div class="corner-tr"></div><div class="corner-bl"></div><div class="corner-br"></div>
+
+    <div class="doc" id="content-pt">
+      <div class="updated">Última atualização: 23 de setembro de 2026</div>
+
+      <p>Esta política descreve quais dados o <strong>Astrovision AR</strong> (pacote
+      <code>com.chromehypercube.astrovision_ar</code>), desenvolvido pela <strong>Chrome
+      Hypercube</strong>, coleta, para que servem e como você pode gerenciá-los.</p>
+
+      <h2>Quais dados coletamos</h2>
+
+      <p><strong>Conta Google (Firebase Authentication).</strong> Se você entra com sua conta
+      Google, coletamos seu e-mail, nome e foto de perfil pra identificar sua conta e sincronizar
+      seu progresso entre aparelhos. Também é possível usar o app sem criar conta — nesse caso,
+      seu progresso fica salvo só localmente no aparelho.</p>
+
+      <p><strong>Progresso salvo na nuvem (Cloud Firestore).</strong> Se você tem conta, salvamos
+      quais astros você desbloqueou e suas preferências, vinculados ao seu identificador de conta,
+      pra você não perder o progresso ao trocar de aparelho.</p>
+
+      <p><strong>Dados de uso (Firebase Analytics).</strong> Coletamos eventos de uso do app —
+      por exemplo, qual astro você inspecionou, quais buscas você fez, se uma compra ou código
+      promocional foi concluído, qual categoria você abriu. Esses eventos são agregados e não
+      identificam você pessoalmente; usamos pra entender quais partes do app são mais usadas e
+      onde melhorar.</p>
+
+      <p><strong>Relatórios de erro (Firebase Crashlytics).</strong> Se o app travar ou tiver um
+      erro, enviamos informações técnicas (modelo do aparelho, versão do Android, e o ponto do
+      código onde o erro aconteceu) vinculadas a um identificador anônimo, só pra conseguirmos
+      diagnosticar e corrigir o problema.</p>
+
+      <p><strong>Compras (Google Play Billing).</strong> Compras de pacotes de conteúdo dentro do
+      app são processadas inteiramente pelo Google Play. Não temos acesso a dados de cartão ou
+      forma de pagamento — só recebemos a confirmação de que a compra foi concluída.</p>
+
+      <h2>Como usamos esses dados</h2>
+      <ul>
+        <li>Operar as funções principais do app (login, sincronizar seu progresso, liberar
+        conteúdo comprado).</li>
+        <li>Entender, de forma agregada, como o app é usado, pra priorizar melhorias.</li>
+        <li>Diagnosticar e corrigir travamentos e erros.</li>
+      </ul>
+      <p>Não vendemos seus dados pra terceiros.</p>
+
+      <h2>Com quem compartilhamos</h2>
+      <p>Os dados descritos acima passam pelos serviços do Google usados pelo app — Firebase
+      (Authentication, Firestore, Analytics, Crashlytics) e Google Play Billing — cada um sujeito
+      à própria <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">
+      política de privacidade do Google</a>. Não compartilhamos esses dados com nenhum outro
+      terceiro.</p>
+
+      <h2>Retenção e exclusão</h2>
+      <p>Seus dados de conta e progresso ficam armazenados enquanto sua conta existir. Pra pedir
+      a exclusão dos seus dados, entre em contato pela nossa <a
+      href="feedback.html">página de feedback</a> ou pelo e-mail <a
+      href="mailto:chromehypercube@gmail.com">chromehypercube@gmail.com</a>, informando o e-mail
+      da conta usada no app.</p>
+
+      <h2>Crianças</h2>
+      <p>O Astrovision AR não é direcionado a crianças menores de 13 anos, e não coletamos
+      intencionalmente dados pessoais de menores dessa idade.</p>
+
+      <h2>Alterações nesta política</h2>
+      <p>Podemos atualizar esta política conforme o app evolui. A data no topo desta página
+      sempre indica a versão mais recente.</p>
+
+      <h2>Contato</h2>
+      <p>Dúvidas sobre esta política? Fale com a gente pela <a href="feedback.html">página de
+      feedback</a> ou pelo e-mail <a
+      href="mailto:chromehypercube@gmail.com">chromehypercube@gmail.com</a>.</p>
+    </div>
+
+    <div class="doc" id="content-en" hidden>
+      <div class="updated">Last updated: September 23, 2026</div>
+
+      <p>This policy describes what data <strong>Astrovision AR</strong> (package
+      <code>com.chromehypercube.astrovision_ar</code>), developed by <strong>Chrome
+      Hypercube</strong>, collects, what it's used for, and how you can manage it.</p>
+
+      <h2>What data we collect</h2>
+
+      <p><strong>Google account (Firebase Authentication).</strong> If you sign in with your
+      Google account, we collect your email, name, and profile picture to identify your account
+      and sync your progress across devices. You can also use the app without creating an
+      account — in that case, your progress is saved locally on the device only.</p>
+
+      <p><strong>Cloud-saved progress (Cloud Firestore).</strong> If you have an account, we save
+      which astros you've unlocked and your preferences, linked to your account identifier, so
+      you don't lose progress when switching devices.</p>
+
+      <p><strong>Usage data (Firebase Analytics).</strong> We collect app usage events — for
+      example, which astro you inspected, what you searched for, whether a purchase or promo code
+      was completed, which category you opened. These events are aggregated and don't personally
+      identify you; we use them to understand which parts of the app are used most and where to
+      improve.</p>
+
+      <p><strong>Crash reports (Firebase Crashlytics).</strong> If the app crashes or hits an
+      error, we send technical information (device model, Android version, and the point in the
+      code where the error happened) linked to an anonymous identifier, solely to diagnose and
+      fix the issue.</p>
+
+      <p><strong>Purchases (Google Play Billing).</strong> Purchases of in-app content bundles
+      are processed entirely by Google Play. We don't have access to card or payment details —
+      we only receive confirmation that the purchase was completed.</p>
+
+      <h2>How we use this data</h2>
+      <ul>
+        <li>Run the app's core features (sign-in, syncing your progress, unlocking purchased
+        content).</li>
+        <li>Understand, in aggregate, how the app is used, to prioritize improvements.</li>
+        <li>Diagnose and fix crashes and errors.</li>
+      </ul>
+      <p>We do not sell your data to third parties.</p>
+
+      <h2>Who we share it with</h2>
+      <p>The data described above passes through the Google services the app uses — Firebase
+      (Authentication, Firestore, Analytics, Crashlytics) and Google Play Billing — each subject
+      to Google's own <a href="https://policies.google.com/privacy" target="_blank"
+      rel="noopener">privacy policy</a>. We don't share this data with any other third party.</p>
+
+      <h2>Retention and deletion</h2>
+      <p>Your account and progress data is stored for as long as your account exists. To request
+      deletion of your data, reach out through our <a href="feedback.html">feedback page</a> or at
+      <a href="mailto:chromehypercube@gmail.com">chromehypercube@gmail.com</a>, including the
+      email of the account used in the app.</p>
+
+      <h2>Children</h2>
+      <p>Astrovision AR is not directed at children under 13, and we do not knowingly collect
+      personal data from children under that age.</p>
+
+      <h2>Changes to this policy</h2>
+      <p>We may update this policy as the app evolves. The date at the top of this page always
+      reflects the most recent version.</p>
+
+      <h2>Contact</h2>
+      <p>Questions about this policy? Reach out through our <a href="feedback.html">feedback
+      page</a> or at <a href="mailto:chromehypercube@gmail.com">chromehypercube@gmail.com</a>.</p>
+    </div>
+
+    <div class="foot-row">
+      <div class="foot-note" data-i18n="footNote"></div>
+    </div>
+    <div class="credit" data-i18n="credit"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var STRINGS = {
+    pt: {
+      eyebrow: 'ASTROVISION AR · PRIVACIDADE',
+      h1a: 'Política de privacidade — ',
+      pitch: 'Como o app coleta, usa e protege seus dados.',
+      footNote: 'Dúvidas? Fale com a gente pela página de feedback.',
+      credit: 'Astrovision AR · um aplicativo da Chrome Hypercube',
+      toggleLabel: 'EN'
+    },
+    en: {
+      eyebrow: 'ASTROVISION AR · PRIVACY',
+      h1a: 'Privacy policy — ',
+      pitch: 'How the app collects, uses, and protects your data.',
+      footNote: 'Questions? Reach out through our feedback page.',
+      credit: 'Astrovision AR · a Chrome Hypercube app',
+      toggleLabel: 'PT'
+    }
+  };
+
+  var currentLang = (navigator.language || 'pt').toLowerCase().indexOf('pt') === 0 ? 'pt' : 'en';
+
+  function applyLang(lang){
+    currentLang = lang;
+    document.documentElement.lang = lang === 'pt' ? 'pt-BR' : 'en';
+    var s = STRINGS[lang];
+    document.querySelectorAll('[data-i18n]').forEach(function(el){
+      var key = el.getAttribute('data-i18n');
+      if(s[key] != null) el.textContent = s[key];
+    });
+    document.getElementById('lang-toggle').textContent = s.toggleLabel;
+    document.getElementById('content-pt').hidden = lang !== 'pt';
+    document.getElementById('content-en').hidden = lang !== 'en';
+  }
+
+  document.getElementById('lang-toggle').addEventListener('click', function(){
+    applyLang(currentLang === 'pt' ? 'en' : 'pt');
+  });
+
+  applyLang(currentLang);
+})();
+</script>
+</body>
+</html>
