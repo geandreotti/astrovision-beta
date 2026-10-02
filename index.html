@@ -11,12 +11,14 @@
 <meta property="og:url" content="https://geandreotti.github.io/astrovision-beta/">
 <meta property="og:title" content="Astrovision AR — Programa Beta">
 <meta property="og:description" content="Ajude a testar o Astrovision AR antes do lançamento. Um aplicativo da Chrome Hypercube.">
-<meta property="og:image" content="https://geandreotti.github.io/astrovision-beta/screenshots/banner-pt.jpg">
+<meta property="og:image" content="https://geandreotti.github.io/astrovision-beta/screenshots/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta property="og:locale" content="pt_BR">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Astrovision AR — Programa Beta">
 <meta name="twitter:description" content="Ajude a testar o Astrovision AR antes do lançamento.">
-<meta name="twitter:image" content="https://geandreotti.github.io/astrovision-beta/screenshots/banner-pt.jpg">
+<meta name="twitter:image" content="https://geandreotti.github.io/astrovision-beta/screenshots/og-image.jpg">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
 <script src="https://accounts.google.com/gsi/client"></script>
 <style>
@@ -222,7 +224,7 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
 .shots::-webkit-scrollbar{ display:none; }
 /* auto margins center the row when it fits and fall back to left-aligned (scrollable) when it doesn't */
 .shots::before, .shots::after{ content:""; margin:auto; }
-.shot{ flex:0 0 clamp(128px,36vw,160px); margin:0; scroll-snap-align:center; }
+.shot{ flex:0 0 clamp(128px,36vw,150px); margin:0; scroll-snap-align:center; }
 .phone{
   padding:5px; border-radius:22px;
   background:linear-gradient(160deg, rgba(112,214,224,0.38), rgba(112,214,224,0.08));
@@ -493,6 +495,7 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
     <div class="shots">
       <figure class="shot"><div class="phone"><img data-shot="home" data-i18n-alt="shotHomeAlt" alt="" loading="lazy"></div><figcaption data-i18n="shotHome"></figcaption></figure>
       <figure class="shot"><div class="phone"><img data-shot="explore" data-i18n-alt="shotExploreAlt" alt="" loading="lazy"></div><figcaption data-i18n="shotExplore"></figcaption></figure>
+      <figure class="shot"><div class="phone"><img data-shot="layers" data-i18n-alt="shotLayersAlt" alt="" loading="lazy"></div><figcaption data-i18n="shotLayers"></figcaption></figure>
       <figure class="shot"><div class="phone"><img data-shot="compare" data-i18n-alt="shotCompareAlt" alt="" loading="lazy"></div><figcaption data-i18n="shotCompare"></figcaption></figure>
     </div>
     <p class="about-copy" data-i18n="aboutCopy"></p>
@@ -584,17 +587,11 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
             <input id="f-country" name="entry.2102280177" type="text" required autocomplete="country-name"></div>
         </div>
 
-        <div class="field"><label data-i18n="labelAge" for="f-age"></label>
-          <input id="f-age" name="entry.108445625" type="number" min="8" max="99" required></div>
-
         <div class="field"><label data-i18n="labelBrand" for="f-brand"></label>
           <select id="f-brand" name="entry.924664508" required></select></div>
 
         <div class="field"><label data-i18n="labelModel" for="f-model"></label>
           <input id="f-model" name="entry.1044148243" type="text" required data-i18n-placeholder="placeholderModel"></div>
-
-        <div class="field"><label data-i18n="labelAndroid" for="f-android"></label>
-          <select id="f-android" name="entry.256874408"></select></div>
 
         <button type="submit" class="submit-btn" id="submit-btn" data-i18n="submitBtn"></button>
         <div class="error-msg" id="error-msg"></div>
@@ -642,8 +639,7 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
   var BRANDS = ["Samsung","Xiaomi, Redmi ou POCO","Motorola","Google Pixel","Asus","Realme","OnePlus","Multilaser","LG","Sony","Nokia","TCL","Lenovo","Infinix"];
   var LANGUAGES = ["Português","English"];
   // Languages that have their own app screenshots under screenshots/<lang>/; others reuse pt
-  var SHOT_LANGS = ['pt'];
-  var ANDROID_VERSIONS = ["Android 16","Android 15","Android 14","Android 13","Android 12","Android 11","Android 10","Android 9","Android 8","Android 7"];
+  var SHOT_LANGS = ['pt', 'en'];
 
   var STRINGS = {
     pt: {
@@ -662,13 +658,13 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
       feature3Desc: 'Coloque dois astros frente a frente e veja, em escala, diâmetro, gravidade, massa e temperatura — com um resumo em uma frase.',
       feature4Title: 'Explore por categoria',
       feature4Desc: 'Busque e filtre planetas, estrelas, galáxias, nebulosas e buracos negros. Comece pelo pacote inicial e expanda seu universo com novos pacotes.',
-      shotHome: 'Início', shotExplore: 'Explorar', shotCompare: 'Comparar',
+      shotHome: 'Início', shotExplore: 'Explorar', shotLayers: 'Camadas', shotCompare: 'Comparar',
       shotHomeAlt: 'Tela inicial do Astrovision AR com a Terra em destaque e as categorias de astros',
       shotExploreAlt: 'Tela Explorar com busca, filtros por categoria e o pacote inicial',
+      shotLayersAlt: 'Terra com a camada de zonas climáticas de Köppen ligada e a lista de camadas disponíveis',
       shotCompareAlt: 'Tela Comparar com a Terra e Marte lado a lado, mostrando diâmetro, gravidade e massa',
       formEyebrow: 'INSCRIÇÃO',
       labelName: 'Nome completo',
-      labelAge: 'Idade',
       labelCountry: 'País',
       labelLanguage: 'Idioma preferido',
       labelEmail: 'Conta do Google',
@@ -679,7 +675,6 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
       labelBrand: 'Marca do celular',
       labelModel: 'Modelo do celular',
       placeholderModel: 'ex: Galaxy S23, Redmi Note 13',
-      labelAndroid: 'Versão do Android',
       optOptional: '(opcional)',
       submitBtn: 'Quero testar',
       submitting: 'Enviando…',
@@ -693,7 +688,6 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
       cdDays: 'DIAS', cdHours: 'HORAS', cdMins: 'MIN', cdSecs: 'SEG',
       androidOnlyNote: 'Por enquanto, o teste fechado é só pra Android.',
       errorRequired: 'Preenche os campos obrigatórios pra continuar.',
-      notSure: 'Não sei',
       otherBrand: 'Outra',
       otherLanguage: 'Outro',
       toggleLabel: 'EN'
@@ -714,13 +708,13 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
       feature3Desc: 'Put two bodies face to face and see diameter, gravity, mass, and temperature to scale — with a one-sentence summary.',
       feature4Title: 'Explore by category',
       feature4Desc: 'Search and filter planets, stars, galaxies, nebulae, and black holes. Start with the starter pack and expand your universe with new packs.',
-      shotHome: 'Home', shotExplore: 'Explore', shotCompare: 'Compare',
+      shotHome: 'Home', shotExplore: 'Explore', shotLayers: 'Layers', shotCompare: 'Compare',
       shotHomeAlt: 'Astrovision AR home screen featuring the Earth and the celestial body categories',
       shotExploreAlt: 'Explore screen with search, category filters, and the starter pack',
+      shotLayersAlt: 'The Earth with the Köppen climate zones layer switched on and the list of available layers',
       shotCompareAlt: 'Compare screen with the Earth and Mars side by side, showing diameter, gravity, and mass',
       formEyebrow: 'SIGN UP',
       labelName: 'Full name',
-      labelAge: 'Age',
       labelCountry: 'Country',
       labelLanguage: 'Preferred language',
       labelEmail: 'Google account',
@@ -731,7 +725,6 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
       labelBrand: 'Phone brand',
       labelModel: 'Phone model',
       placeholderModel: 'e.g. Galaxy S23, Pixel 8',
-      labelAndroid: 'Android version',
       optOptional: '(optional)',
       submitBtn: 'I want to test',
       submitting: 'Sending…',
@@ -745,7 +738,6 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
       cdDays: 'DAYS', cdHours: 'HOURS', cdMins: 'MIN', cdSecs: 'SEC',
       androidOnlyNote: 'For now, the closed test is Android-only.',
       errorRequired: 'Fill in the required fields to continue.',
-      notSure: 'Not sure',
       otherBrand: 'Other',
       otherLanguage: 'Other',
       toggleLabel: 'PT'
@@ -798,7 +790,6 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
     if(firstFill) langSel.selectedIndex = lang === 'pt' ? 0 : 1;
 
     fillSelect(document.getElementById('f-brand'), BRANDS, 'otherBrand', lang);
-    fillSelect(document.getElementById('f-android'), ANDROID_VERSIONS, 'notSure', lang);
   }
 
   document.getElementById('lang-toggle').addEventListener('click', function(){
