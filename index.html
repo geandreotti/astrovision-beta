@@ -224,7 +224,11 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
 .shots::-webkit-scrollbar{ display:none; }
 /* auto margins center the row when it fits and fall back to left-aligned (scrollable) when it doesn't */
 .shots::before, .shots::after{ content:""; margin:auto; }
-.shot{ flex:0 0 clamp(128px,36vw,150px); margin:0; scroll-snap-align:center; }
+.shot{ flex:0 0 clamp(128px,36vw,150px); margin:0; scroll-snap-align:start; }
+/* On phones the strip runs edge to edge (the page has 20px side padding), first screen still lines up with the cards below */
+@media (max-width:719px){
+  .shots{ width:100vw; padding-inline:20px; scroll-padding-inline:20px; }
+}
 .phone{
   padding:5px; border-radius:22px;
   background:linear-gradient(160deg, rgba(112,214,224,0.38), rgba(112,214,224,0.08));
