@@ -708,7 +708,9 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
 
   var currentLang = (navigator.language || 'pt').toLowerCase().indexOf('pt') === 0 ? 'pt' : 'en';
 
+  // Keeps the selection by position: the trailing option's text differs per language
   function fillSelect(select, values, trailingKey, lang){
+    var prevIdx = select.selectedIndex;
     select.innerHTML = '';
     values.forEach(function(v){
       var o = document.createElement('option');
@@ -719,6 +721,7 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
     trailing.value = STRINGS[lang][trailingKey];
     trailing.textContent = STRINGS[lang][trailingKey];
     select.appendChild(trailing);
+    if(prevIdx > 0) select.selectedIndex = prevIdx;
   }
 
   function applyLang(lang){
@@ -737,19 +740,12 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
     document.getElementById('banner-img').src = lang === 'pt' ? 'screenshots/banner-pt.jpg' : 'screenshots/banner-en.jpg';
 
     var langSel = document.getElementById('f-lang');
-    var prevLangIdx = langSel.options.length ? langSel.selectedIndex : (lang === 'pt' ? 0 : 1);
+    var firstFill = !langSel.options.length;
     fillSelect(langSel, LANGUAGES, 'otherLanguage', lang);
-    langSel.selectedIndex = prevLangIdx;
+    if(firstFill) langSel.selectedIndex = lang === 'pt' ? 0 : 1;
 
-    var brandSel = document.getElementById('f-brand');
-    var prevBrand = brandSel.value;
-    fillSelect(brandSel, BRANDS, 'otherBrand', lang);
-    if(prevBrand) brandSel.value = prevBrand;
-
-    var androidSel = document.getElementById('f-android');
-    var prevAndroid = androidSel.value;
-    fillSelect(androidSel, ANDROID_VERSIONS, 'notSure', lang);
-    if(prevAndroid) androidSel.value = prevAndroid;
+    fillSelect(document.getElementById('f-brand'), BRANDS, 'otherBrand', lang);
+    fillSelect(document.getElementById('f-android'), ANDROID_VERSIONS, 'notSure', lang);
   }
 
   document.getElementById('lang-toggle').addEventListener('click', function(){
