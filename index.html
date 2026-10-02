@@ -547,7 +547,7 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
 
         <div class="row-2">
           <div class="field"><label data-i18n="labelLanguage" for="f-lang"></label>
-            <input id="f-lang" name="entry.1188727805" type="text" required data-i18n-placeholder="placeholderLanguage"></div>
+            <select id="f-lang" name="entry.1188727805" required></select></div>
           <div class="field"><label data-i18n="labelCountry" for="f-country"></label>
             <input id="f-country" name="entry.2102280177" type="text" required autocomplete="country-name"></div>
         </div>
@@ -563,9 +563,6 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
 
         <div class="field"><label data-i18n="labelAndroid" for="f-android"></label>
           <select id="f-android" name="entry.256874408"></select></div>
-
-        <div class="field"><label data-i18n="labelSocialText" for="f-social"></label>
-          <input id="f-social" name="entry.179313469" type="text" required data-i18n-placeholder="placeholderSocial"></div>
 
         <button type="submit" class="submit-btn" id="submit-btn" data-i18n="submitBtn"></button>
         <div class="error-msg" id="error-msg"></div>
@@ -611,6 +608,7 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
 <script>
 (function(){
   var BRANDS = ["Samsung","Xiaomi, Redmi ou POCO","Motorola","Google Pixel","Asus","Realme","OnePlus","Multilaser","LG","Sony","Nokia","TCL","Lenovo","Infinix"];
+  var LANGUAGES = ["Português","English"];
   var ANDROID_VERSIONS = ["Android 16","Android 15","Android 14","Android 13","Android 12","Android 11","Android 10","Android 9","Android 8","Android 7"];
 
   var STRINGS = {
@@ -633,7 +631,6 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
       labelAge: 'Idade',
       labelCountry: 'País',
       labelLanguage: 'Idioma preferido',
-      placeholderLanguage: 'Português, English…',
       labelEmail: 'Conta do Google',
       googleSwitch: 'trocar de conta',
       errorGoogleRequired: 'Entra com sua conta do Google pra continuar.',
@@ -643,9 +640,7 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
       labelModel: 'Modelo do celular',
       placeholderModel: 'ex: Galaxy S23, Redmi Note 13',
       labelAndroid: 'Versão do Android',
-      labelSocialText: 'Instagram / Discord',
       optOptional: '(opcional)',
-      placeholderSocial: '@seu_usuario',
       submitBtn: 'Quero testar',
       submitting: 'Enviando…',
       footNote: 'Seus dados são usados só pra te convidar no teste fechado do Google Play.',
@@ -660,6 +655,7 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
       errorRequired: 'Preenche os campos obrigatórios pra continuar.',
       notSure: 'Não sei',
       otherBrand: 'Outra',
+      otherLanguage: 'Outro',
       toggleLabel: 'EN'
     },
     en: {
@@ -681,7 +677,6 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
       labelAge: 'Age',
       labelCountry: 'Country',
       labelLanguage: 'Preferred language',
-      placeholderLanguage: 'English, Português…',
       labelEmail: 'Google account',
       googleSwitch: 'switch account',
       errorGoogleRequired: 'Sign in with your Google account to continue.',
@@ -691,9 +686,7 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
       labelModel: 'Phone model',
       placeholderModel: 'e.g. Galaxy S23, Pixel 8',
       labelAndroid: 'Android version',
-      labelSocialText: 'Instagram / Discord',
       optOptional: '(optional)',
-      placeholderSocial: '@your_handle',
       submitBtn: 'I want to test',
       submitting: 'Sending…',
       footNote: 'Your info is only used to invite you to the Google Play closed test.',
@@ -708,6 +701,7 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
       errorRequired: 'Fill in the required fields to continue.',
       notSure: 'Not sure',
       otherBrand: 'Other',
+      otherLanguage: 'Other',
       toggleLabel: 'PT'
     }
   };
@@ -741,6 +735,11 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
     });
     document.getElementById('lang-toggle').textContent = s.toggleLabel;
     document.getElementById('banner-img').src = lang === 'pt' ? 'screenshots/banner-pt.jpg' : 'screenshots/banner-en.jpg';
+
+    var langSel = document.getElementById('f-lang');
+    var prevLangIdx = langSel.options.length ? langSel.selectedIndex : (lang === 'pt' ? 0 : 1);
+    fillSelect(langSel, LANGUAGES, 'otherLanguage', lang);
+    langSel.selectedIndex = prevLangIdx;
 
     var brandSel = document.getElementById('f-brand');
     var prevBrand = brandSel.value;
