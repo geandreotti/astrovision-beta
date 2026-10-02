@@ -213,11 +213,29 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
   margin:0 0 30px;
   width:100%;
 }
-.banner{
-  width:100%; border-radius:14px;
-  border:1px solid var(--panel-border);
-  box-shadow:0 20px 50px -20px rgba(0,0,0,0.6);
-  margin-bottom:20px;
+.shots{
+  display:flex; gap:12px; width:100%;
+  overflow-x:auto; scroll-snap-type:x proximity;
+  padding:6px 4px 18px; margin-bottom:8px;
+  scrollbar-width:none;
+}
+.shots::-webkit-scrollbar{ display:none; }
+/* auto margins center the row when it fits and fall back to left-aligned (scrollable) when it doesn't */
+.shots::before, .shots::after{ content:""; margin:auto; }
+.shot{ flex:0 0 clamp(128px,36vw,160px); margin:0; scroll-snap-align:center; }
+.phone{
+  padding:5px; border-radius:22px;
+  background:linear-gradient(160deg, rgba(112,214,224,0.38), rgba(112,214,224,0.08));
+  box-shadow:0 18px 40px -18px rgba(0,0,0,0.75), 0 0 30px -14px rgba(82,227,232,0.35);
+}
+.phone img{
+  display:block; width:100%; aspect-ratio:9/20; object-fit:cover;
+  border-radius:17px; background:#05080f; cursor:zoom-in;
+}
+.shot figcaption{
+  margin-top:10px; text-align:center;
+  font-family:'Rajdhani', sans-serif; font-weight:700; font-size:13px;
+  letter-spacing:.12em; text-transform:uppercase; color:var(--text-soft);
 }
 .about-copy{
   font-size:14.5px; line-height:1.7; color:var(--text-soft);
@@ -472,7 +490,11 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
 
   <section class="snap-section" id="features">
     <p class="section-title" data-i18n="featuresTitle"></p>
-    <img class="banner" id="banner-img" src="screenshots/banner-pt.jpg" alt="Astrovision AR — Explore o universo em 3D" loading="lazy">
+    <div class="shots">
+      <figure class="shot"><div class="phone"><img data-shot="home" data-i18n-alt="shotHomeAlt" alt="" loading="lazy"></div><figcaption data-i18n="shotHome"></figcaption></figure>
+      <figure class="shot"><div class="phone"><img data-shot="explore" data-i18n-alt="shotExploreAlt" alt="" loading="lazy"></div><figcaption data-i18n="shotExplore"></figcaption></figure>
+      <figure class="shot"><div class="phone"><img data-shot="compare" data-i18n-alt="shotCompareAlt" alt="" loading="lazy"></div><figcaption data-i18n="shotCompare"></figcaption></figure>
+    </div>
     <p class="about-copy" data-i18n="aboutCopy"></p>
     <div class="features">
       <div class="feature">
@@ -492,11 +514,10 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
       <div class="feature">
         <span class="feature-icon" aria-hidden="true">
           <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M24 14c-3.2-2.3-8.2-3.4-13-3.4v22.8c4.8 0 9.8 1.1 13 3.4 3.2-2.3 8.2-3.4 13-3.4V10.6c-4.8 0-9.8 1.1-13 3.4z"/>
-            <path d="M24 14v22.8"/>
-            <path d="M8 15.5h6.5M8 21h6.5M8 26.5h5" stroke-width="1.3"/>
-            <path d="M33.5 15.5h6.5M33.5 21h6.5M35 26.5h5" stroke-width="1.3"/>
-            <path d="M24 6.5l.8 1.7 1.7.8-1.7.8-.8 1.7-.8-1.7-1.7-.8 1.7-.8z" stroke-width="1.2"/>
+            <path d="M24 7l17 8.5-17 8.5-17-8.5z"/>
+            <path d="M7 24l17 8.5L41 24" stroke-width="1.6"/>
+            <path d="M7 32.5L24 41l17-8.5" stroke-width="1.3"/>
+            <ellipse cx="24" cy="15.5" rx="6" ry="3" stroke-width="1.2"/>
           </svg>
         </span>
         <div><h3 data-i18n="feature2Title"></h3><p data-i18n="feature2Desc"></p></div>
@@ -512,6 +533,17 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
           </svg>
         </span>
         <div><h3 data-i18n="feature3Title"></h3><p data-i18n="feature3Desc"></p></div>
+      </div>
+      <div class="feature">
+        <span class="feature-icon" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="24" cy="24" r="14"/>
+            <path d="M30.5 17.5l-4.2 8.8-8.8 4.2 4.2-8.8z" stroke-width="1.6"/>
+            <circle cx="24" cy="24" r="1.2" fill="currentColor" stroke="none"/>
+            <path d="M24 5.5v4M24 38.5v4M5.5 24h4M38.5 24h4" stroke-width="1.3"/>
+          </svg>
+        </span>
+        <div><h3 data-i18n="feature4Title"></h3><p data-i18n="feature4Desc"></p></div>
       </div>
     </div>
     <a class="hero-cta" href="#signup" data-i18n="heroCta" style="margin-top:32px;"></a>
@@ -609,6 +641,8 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
 (function(){
   var BRANDS = ["Samsung","Xiaomi, Redmi ou POCO","Motorola","Google Pixel","Asus","Realme","OnePlus","Multilaser","LG","Sony","Nokia","TCL","Lenovo","Infinix"];
   var LANGUAGES = ["Português","English"];
+  // Languages that have their own app screenshots under screenshots/<lang>/; others reuse pt
+  var SHOT_LANGS = ['pt'];
   var ANDROID_VERSIONS = ["Android 16","Android 15","Android 14","Android 13","Android 12","Android 11","Android 10","Android 9","Android 8","Android 7"];
 
   var STRINGS = {
@@ -619,13 +653,19 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
       heroCtaLearnMore: 'Saber mais',
       heroCta: 'Quero testar',
       featuresTitle: 'Sobre o Astrovision AR',
-      aboutCopy: 'Astrovision AR é um app de exploração espacial: gire e inspecione planetas, luas, estrelas, galáxias e buracos negros em 3D e realidade aumentada, com dados astronômicos reais. Compare corpos celestes lado a lado e mergulhe na Biblioteca Astronômica pra aprender mais sobre cada um.',
+      aboutCopy: 'Astrovision AR é um app de exploração espacial: gire e inspecione planetas, luas, estrelas, galáxias e buracos negros em 3D e realidade aumentada, com dados astronômicos reais. Ligue camadas sobre a Terra, compare astros lado a lado e compartilhe o que descobrir.',
       feature1Title: 'Inspecione em 3D',
       feature1Desc: 'Gire, dê zoom e veja dados reais — temperatura, diâmetro, composição atmosférica — pra cada planeta, lua, estrela e galáxia.',
-      feature2Title: 'Biblioteca Astronômica',
-      feature2Desc: 'Textos completos e curados sobre cada corpo celeste, do nosso Sistema Solar até galáxias distantes.',
+      feature2Title: 'Camadas da Terra',
+      feature2Desc: 'Ligue camadas sobre o globo — fronteiras, clima, fusos horários, densidade populacional, vulcões, terremotos históricos e até a ISS orbitando ao vivo.',
       feature3Title: 'Compare astros lado a lado',
-      feature3Desc: 'Gráficos visuais pra comparar diâmetro, massa, gravidade e mais entre dois astros quaisquer.',
+      feature3Desc: 'Coloque dois astros frente a frente e veja, em escala, diâmetro, gravidade, massa e temperatura — com um resumo em uma frase.',
+      feature4Title: 'Explore por categoria',
+      feature4Desc: 'Busque e filtre planetas, estrelas, galáxias, nebulosas e buracos negros. Comece pelo pacote inicial e expanda seu universo com novos pacotes.',
+      shotHome: 'Início', shotExplore: 'Explorar', shotCompare: 'Comparar',
+      shotHomeAlt: 'Tela inicial do Astrovision AR com a Terra em destaque e as categorias de astros',
+      shotExploreAlt: 'Tela Explorar com busca, filtros por categoria e o pacote inicial',
+      shotCompareAlt: 'Tela Comparar com a Terra e Marte lado a lado, mostrando diâmetro, gravidade e massa',
       formEyebrow: 'INSCRIÇÃO',
       labelName: 'Nome completo',
       labelAge: 'Idade',
@@ -665,13 +705,19 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
       heroCtaLearnMore: 'Learn more',
       heroCta: 'I want to test',
       featuresTitle: 'About Astrovision AR',
-      aboutCopy: 'Astrovision AR is a space-exploration app: rotate and inspect planets, moons, stars, galaxies, and black holes in 3D and augmented reality, backed by real astronomical data. Compare celestial bodies side by side and dive into the Astronomical Library to learn more about each one.',
+      aboutCopy: 'Astrovision AR is a space-exploration app: rotate and inspect planets, moons, stars, galaxies, and black holes in 3D and augmented reality, backed by real astronomical data. Switch on layers over the Earth, compare celestial bodies side by side, and share what you find.',
       feature1Title: 'Inspect in 3D',
       feature1Desc: 'Rotate, zoom, and see real data — temperature, diameter, atmospheric composition — for every planet, moon, star, and galaxy.',
-      feature2Title: 'Astronomical Library',
-      feature2Desc: 'Full, curated write-ups on every celestial body, from our own Solar System to distant galaxies.',
+      feature2Title: 'Earth layers',
+      feature2Desc: 'Switch on layers over the globe — borders, climate, time zones, population density, volcanoes, historical earthquakes, and even the ISS orbiting live.',
       feature3Title: 'Compare bodies side by side',
-      feature3Desc: 'Visual charts comparing diameter, mass, gravity, and more between any two celestial bodies.',
+      feature3Desc: 'Put two bodies face to face and see diameter, gravity, mass, and temperature to scale — with a one-sentence summary.',
+      feature4Title: 'Explore by category',
+      feature4Desc: 'Search and filter planets, stars, galaxies, nebulae, and black holes. Start with the starter pack and expand your universe with new packs.',
+      shotHome: 'Home', shotExplore: 'Explore', shotCompare: 'Compare',
+      shotHomeAlt: 'Astrovision AR home screen featuring the Earth and the celestial body categories',
+      shotExploreAlt: 'Explore screen with search, category filters, and the starter pack',
+      shotCompareAlt: 'Compare screen with the Earth and Mars side by side, showing diameter, gravity, and mass',
       formEyebrow: 'SIGN UP',
       labelName: 'Full name',
       labelAge: 'Age',
@@ -736,8 +782,15 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
       var key = el.getAttribute('data-i18n-placeholder');
       if(s[key] != null) el.placeholder = s[key];
     });
+    document.querySelectorAll('[data-i18n-alt]').forEach(function(el){
+      var key = el.getAttribute('data-i18n-alt');
+      if(s[key] != null) el.alt = s[key];
+    });
     document.getElementById('lang-toggle').textContent = s.toggleLabel;
-    document.getElementById('banner-img').src = lang === 'pt' ? 'screenshots/banner-pt.jpg' : 'screenshots/banner-en.jpg';
+    var shotLang = SHOT_LANGS.indexOf(lang) >= 0 ? lang : 'pt';
+    document.querySelectorAll('[data-shot]').forEach(function(img){
+      img.src = 'screenshots/' + shotLang + '/' + img.getAttribute('data-shot') + '.jpg';
+    });
 
     var langSel = document.getElementById('f-lang');
     var firstFill = !langSel.options.length;
@@ -931,7 +984,7 @@ html{ scroll-snap-type:y proximity; scroll-behavior:smooth; }
     lightboxImg.src = '';
   }
 
-  document.querySelectorAll('.feature img').forEach(function(img){
+  document.querySelectorAll('.shot img').forEach(function(img){
     img.addEventListener('click', function(){ openLightbox(img.src, img.alt); });
   });
   lightbox.addEventListener('click', function(e){
